@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".env" />
+  </Folder>
+  <Project Path="CmsPro.API/CmsPro.API.csproj" />
+  <Project Path="CmsPro.Application/CmsPro.Application.csproj" />
+  <Project Path="CmsPro.Domain/CmsPro.Domain.csproj" />
+  <Project Path="CmsPro.Infrastructure/CmsPro.Infrastructure.csproj" />
+</Solution>

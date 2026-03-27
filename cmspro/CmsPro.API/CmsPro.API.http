@@ -1,0 +1,6 @@
+@CmsPro.API_HostAddress = http://localhost:5199
+
+GET {{CmsPro.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

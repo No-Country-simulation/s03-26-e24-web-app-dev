@@ -1,0 +1,20 @@
+🎯 Estructura base Clean Architecture para CMS
+Overview: Estructura base Clean Architecture para CMS
+
+Progress: 0% [░░░░░░░░░░]
+
+Last Updated: 2026-03-26 03:31:04
+
+📝 Plan Steps
+crear carpeta src
+crear carpeta tests
+crear proyecto CmsPro.Domain en src
+crear proyecto CmsPro.Application en src
+crear proyecto CmsPro.Infrastructure en src
+crear proyecto CmsPro.Api en src
+crear proyecto CmsPro.Domain.Tests en tests
+crear proyecto CmsPro.Application.Tests en tests
+crear proyecto CmsPro.Api.Tests en tests
+agregar archivos README.md en src y tests
+agregar archivos .gitkeep en carpetas internas para versionado
+validar estructura creada
