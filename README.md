@@ -1,6 +1,10 @@
 # s03-26-e24-web-app-dev
 S03-26-Equipo 24-Web App Development
 
+# Branch: feature/crud-flow
+Esta es la rama de Samuel para subir sus cambios y luego hacer merge con la de Logan.
+Samuel comprobará que se puede hacer un CRUD sobre el la tabla testimonials
+
 # Proyecto:
 
 ## 🤓 Testimonial CMS
