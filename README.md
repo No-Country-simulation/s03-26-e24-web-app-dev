@@ -1,6 +1,10 @@
 # s03-26-e24-web-app-dev
 S03-26-Equipo 24-Web App Development
 
+# Branch: feature/testimonial-schema
+Esta es la rama de Logan para subir sus cambios y luego hacer merge con la de
+Samuel
+
 # Proyecto:
 
 ## 🤓 Testimonial CMS
