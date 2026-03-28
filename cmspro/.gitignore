@@ -1,5 +1,30 @@
-node_modules
-# Keep environment variables out of version control
+# IDEs
+.vscode/
+.idea/
+.vs/
+*.code-workspace
+*.user
+*.userosscache
+*.sln.docstates
+
+# Sistemas Operativos
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+## Archivos de Compilaci4ón y Binarios
+bin/
+obj/
+
+## Paquetes y Dependencias
+restore.navigation
+[Tt]est[Rr]esults/
+*.nupkg
+
+## Configuración y Secretos
+appsettings.Development.json
+appsettings.Local.json
 .env
 
-/generated/prisma
+## Entity Framework Core
+*.log
