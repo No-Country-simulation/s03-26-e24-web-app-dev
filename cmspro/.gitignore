@@ -26,7 +26,6 @@ appsettings.Development.json
 appsettings.Local.json
 .env
 
-<<<<<<< HEAD
 /generated/prisma
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -398,7 +397,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-=======
-## Entity Framework Core
-*.log
->>>>>>> 251aa3597f56ed45bc8b1b8ff740787feaaae13d

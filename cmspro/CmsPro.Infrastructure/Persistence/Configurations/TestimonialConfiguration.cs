@@ -33,8 +33,6 @@ public class TestimonialConfiguration : IEntityTypeConfiguration<Testimonial>
             .IsRequired();
 
         builder.Property(t => t.ApprovedAt);
-<<<<<<< HEAD
-=======
 
         builder.Property(t => t.CategoryId);
 
@@ -46,6 +44,5 @@ public class TestimonialConfiguration : IEntityTypeConfiguration<Testimonial>
             .WithMany()
             .HasForeignKey(t => t.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
->>>>>>> 251aa3597f56ed45bc8b1b8ff740787feaaae13d
     }
 }

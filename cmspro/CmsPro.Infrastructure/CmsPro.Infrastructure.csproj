@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CmsPro.Domain\CmsPro.Domain.csproj" />
+    <ProjectReference Include="..\CmsPro.Application\CmsPro.Application.csproj" />
   </ItemGroup>
 
 </Project>

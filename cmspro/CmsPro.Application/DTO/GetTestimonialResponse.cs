@@ -4,8 +4,9 @@ namespace CmsPro.Application.DTO
 {
     public record GetTestimonialResponse(
         string Content, 
-        string? ImageUrl, 
-        string? VideoUrl
+        string? MultimediaUrl,
+        string AuthorName,
+        DateTime CreatedAt
     );
 
     public static class GetTestimonialResponseExtensions
@@ -16,8 +17,9 @@ namespace CmsPro.Application.DTO
             {
                 return new GetTestimonialResponse(
                     testimonial.Content,
-                    testimonial.ImageUrl,
-                    testimonial.VideoUrl
+                    testimonial.MultimediaUrl,
+                    testimonial.AuthorName,
+                    testimonial.CreatedAt
                 );
             }
         }

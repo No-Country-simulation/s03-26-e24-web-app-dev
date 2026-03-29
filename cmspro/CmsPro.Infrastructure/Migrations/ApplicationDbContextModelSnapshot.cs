@@ -63,7 +63,6 @@ namespace CmsPro.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-<<<<<<< HEAD
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
@@ -77,7 +76,6 @@ namespace CmsPro.Infrastructure.Migrations
                     b.Property<string>("VideoUrl")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
-=======
                     b.Property<string>("Format")
                         .IsRequired()
                         .HasColumnType("text");
@@ -94,7 +92,6 @@ namespace CmsPro.Infrastructure.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
->>>>>>> 251aa3597f56ed45bc8b1b8ff740787feaaae13d
 
                     b.HasKey("Id");
 
