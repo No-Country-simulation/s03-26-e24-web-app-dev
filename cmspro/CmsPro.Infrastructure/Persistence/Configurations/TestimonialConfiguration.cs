@@ -12,20 +12,40 @@ public class TestimonialConfiguration : IEntityTypeConfiguration<Testimonial>
 
         builder.Property(t => t.Content)
             .IsRequired()
-            .HasMaxLength(1000);
+            .HasMaxLength(2000);
 
-        builder.Property(t => t.ImageUrl)
-            .HasMaxLength(500);
+        builder.Property(t => t.AuthorName)
+            .IsRequired()
+            .HasMaxLength(150);
+        
+        builder.Property(t => t.Format)
+            .IsRequired()
+            .HasConversion<string>();
 
-        builder.Property(t => t.VideoUrl)
+        builder.Property(t => t.MultimediaUrl)
             .HasMaxLength(500);
 
         builder.Property(t => t.Status)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion<string>();
 
         builder.Property(t => t.CreatedAt)
             .IsRequired();
 
         builder.Property(t => t.ApprovedAt);
+<<<<<<< HEAD
+=======
+
+        builder.Property(t => t.CategoryId);
+
+        builder.Property(t => t.IsDeleted)
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        builder.HasOne(t => t.Category)
+            .WithMany()
+            .HasForeignKey(t => t.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+>>>>>>> 251aa3597f56ed45bc8b1b8ff740787feaaae13d
     }
 }

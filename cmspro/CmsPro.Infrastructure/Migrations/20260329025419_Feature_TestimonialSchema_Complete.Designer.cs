@@ -3,6 +3,7 @@ using System;
 using CmsPro.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CmsPro.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260329025419_Feature_TestimonialSchema_Complete")]
+    partial class Feature_TestimonialSchema_Complete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,21 +66,6 @@ namespace CmsPro.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-<<<<<<< HEAD
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("VideoUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-=======
                     b.Property<string>("Format")
                         .IsRequired()
                         .HasColumnType("text");
@@ -94,7 +82,6 @@ namespace CmsPro.Infrastructure.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
->>>>>>> 251aa3597f56ed45bc8b1b8ff740787feaaae13d
 
                     b.HasKey("Id");
 

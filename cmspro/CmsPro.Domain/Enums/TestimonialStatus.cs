@@ -2,7 +2,8 @@ namespace CmsPro.Domain.Enums;
 
 public enum TestimonialStatus
 {
-    Pending = 0,
-    Approved = 1,
-    Rejected = 2
+    Draft = 0,
+    Pending = 1,
+    Published = 2,
+    Rejected = 3,
 }
