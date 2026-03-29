@@ -3,20 +3,20 @@ using CmsPro.Domain.Enums;
 
 public class Testimonial
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
 
-    public string Content { get; private set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
 
-    public string? ImageUrl { get; private set; }
+    public string? ImageUrl { get; set; }
 
-    public string? VideoUrl { get; private set; }
+    public string? VideoUrl { get; set; }
 
-    public TestimonialStatus Status { get; private set; }
+    public TestimonialStatus Status { get; set; }
 
-    public DateTime CreatedAt { get; private set; }
+    public DateTime CreatedAt { get; set; }
 
-    public DateTime? ApprovedAt { get; private set; }
-    public DateTime? DummyField { get; private set; }
+    public DateTime? ApprovedAt { get; set; }
+    public bool IsDeleted { get; set; }
 
     // Constructor principal
     public Testimonial(string content, string? imageUrl, string? videoUrl)
@@ -27,7 +27,7 @@ public class Testimonial
         VideoUrl = videoUrl;
         Status = TestimonialStatus.Pending;
         CreatedAt = DateTime.UtcNow;
-        DummyField = DateTime.UtcNow;
+        IsDeleted = false;
     }
 
     // Métodos de dominio (IMPORTANTE 🔥)

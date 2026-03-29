@@ -2666,23 +2666,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MarioNZ\\.nuget\\packages\\": {},
+    "C:\\Users\\samue\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MarioNZ\\source\\repos\\cmspro2\\CmsPro.Infrastructure\\CmsPro.Infrastructure.csproj",
+      "projectUniqueName": "C:\\Users\\samue\\source\\repos\\s03-26-e24-web-app-dev\\cmspro\\CmsPro.Infrastructure\\CmsPro.Infrastructure.csproj",
       "projectName": "CmsPro.Infrastructure",
-      "projectPath": "C:\\Users\\MarioNZ\\source\\repos\\cmspro2\\CmsPro.Infrastructure\\CmsPro.Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\MarioNZ\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MarioNZ\\source\\repos\\cmspro2\\CmsPro.Infrastructure\\obj\\",
+      "projectPath": "C:\\Users\\samue\\source\\repos\\s03-26-e24-web-app-dev\\cmspro\\CmsPro.Infrastructure\\CmsPro.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\samue\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\samue\\source\\repos\\s03-26-e24-web-app-dev\\cmspro\\CmsPro.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\MarioNZ\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\samue\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2691,14 +2691,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\MarioNZ\\source\\repos\\cmspro2\\CmsPro.Domain\\CmsPro.Domain.csproj": {
-              "projectPath": "C:\\Users\\MarioNZ\\source\\repos\\cmspro2\\CmsPro.Domain\\CmsPro.Domain.csproj"
+            "C:\\Users\\samue\\source\\repos\\s03-26-e24-web-app-dev\\cmspro\\CmsPro.Domain\\CmsPro.Domain.csproj": {
+              "projectPath": "C:\\Users\\samue\\source\\repos\\s03-26-e24-web-app-dev\\cmspro\\CmsPro.Domain\\CmsPro.Domain.csproj"
             }
           }
         }

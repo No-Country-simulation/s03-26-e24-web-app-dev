@@ -13,22 +13,104 @@
     }
   ],
   "paths": {
-    "/weatherforecast": {
+    "/testimonial/{id}": {
       "get": {
         "tags": [
           "CmsPro.API"
         ],
-        "operationId": "GetWeatherForecast",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
+                  "$ref": "#/components/schemas/FuncOfGuidAndITestimonyRepositoryAndTaskOfGetTestimonialResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "CmsPro.API"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FuncOfGuidAndUpdateTestimonialRequestAndITestimonyRepositoryAndTask"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "CmsPro.API"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FuncOfGuidAndITestimonyRepositoryAndTask"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testimonial": {
+      "post": {
+        "tags": [
+          "CmsPro.API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FuncOfPostTestimonialRequestAndITestimonyRepositoryAndTask"
                 }
               }
             }
@@ -39,42 +121,10 @@
   },
   "components": {
     "schemas": {
-      "WeatherForecast": {
-        "required": [
-          "date",
-          "temperatureC",
-          "summary"
-        ],
-        "type": "object",
-        "properties": {
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "temperatureC": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          },
-          "summary": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "temperatureF": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          }
-        }
-      }
+      "FuncOfGuidAndITestimonyRepositoryAndTask": { },
+      "FuncOfGuidAndITestimonyRepositoryAndTaskOfGetTestimonialResponse": { },
+      "FuncOfGuidAndUpdateTestimonialRequestAndITestimonyRepositoryAndTask": { },
+      "FuncOfPostTestimonialRequestAndITestimonyRepositoryAndTask": { }
     }
   },
   "tags": [

@@ -27,7 +27,5 @@ public class TestimonialConfiguration : IEntityTypeConfiguration<Testimonial>
             .IsRequired();
 
         builder.Property(t => t.ApprovedAt);
-
-        builder.Property(t => t.DummyField);
     }
 }
