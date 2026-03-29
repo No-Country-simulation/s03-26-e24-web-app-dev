@@ -4,32 +4,41 @@ using CmsPro.Domain.Entities;
 
 namespace CmsPro.API
 {
-    public static class TestimonialRoutes
+    public class TestimonialRoutes
     {
-        public static async Task<GetTestimonialResponse> GetTestimonial(Guid id, ITestimonyRepository service)
+        private ITestimonyRepository _repository;
+        public TestimonialRoutes(ITestimonyRepository repository) {
+            _repository = repository;
+        }
+        public async Task<GetTestimonialResponse> GetTestimonial(Guid id)
         {
-            Testimonial testimonial = await service.GetTestimonial(id);
+            Testimonial testimonial = await _repository.GetTestimonial(id);
 
             return testimonial.ToGetTestimonialResponse();
         }
 
-        public static async Task CreateTestimonial(PostTestimonialRequest body, ITestimonyRepository service)
+        public async Task<List<GetTestimonialResponse>> GetAllTestimonials(Guid id, string category)
         {
-            await service.PostTestimonial(body);
+            List<Testimonial> testimonials = await _repository.GetTestimonials(id, category);
+            return testimonials.Select(t => t.ToGetTestimonialResponse()).ToList();
+        }
+
+        public async Task CreateTestimonial(PostTestimonialRequest body)
+        {
+            await _repository.PostTestimonial(body);
 
             return;
         }
 
-        public static async Task UpdateTestimonial(Guid id, UpdateTestimonialRequest body, ITestimonyRepository service)
+        public async Task UpdateTestimonial(Guid id, UpdateTestimonialRequest body)
         {
-            await service.UpdateTestimonial(id, body);
+            await _repository.UpdateTestimonial(id, body);
 
             return;
         }
-
-        public static async Task DeleteTestimonial(Guid id, ITestimonyRepository service)
+        public async Task DeleteTestimonial(Guid id)
         {
-            await service.DeleteTestimonial(id);
+            await _repository.DeleteTestimonial(id);
 
             return;
         }
