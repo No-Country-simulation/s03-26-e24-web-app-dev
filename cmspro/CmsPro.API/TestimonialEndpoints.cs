@@ -1,4 +1,5 @@
 ﻿using CmsPro.Application.DTO;
+using ErrorOr;
 
 namespace CmsPro.API
 {
@@ -10,32 +11,52 @@ namespace CmsPro.API
             {
                 var group = app.MapGroup("/testimonials");
 
-                group.MapGet("/", (Guid id, string category = "") => GetAllTestimonials);
-                group.MapPost("/", (PostTestimonialRequest body) => CreateTestimonial);
-                group.MapPut("/{id}", (Guid id) => UpdateTestimonial);
-                group.MapDelete("/{id}", (Guid id) => DeleteTestimonial);
+                group.MapGet("/{id}", GetTestimonial);
+                group.MapGet("/", GetAllTestimonials);
+                group.MapPost("/", CreateTestimonial);
+                group.MapPut("/{id}", UpdateTestimonial);
+                group.MapDelete("/{id}", DeleteTestimonial);
             }
         }
-        private static async Task<IResult> GetAllTestimonials(Guid id, string category, TestimonialRoutes routes)
+        private static async Task<IResult> GetTestimonial(Guid id, TestimonialRoutes routes)
         {
-            var list = await routes.GetAllTestimonials(id, category);
+            var result = await routes.GetTestimonial(id);
 
-            return TypedResults.Ok(list);
+            return result.Match(
+                testimonial => TypedResults.Ok(testimonial),
+                errors => Results.Problem(result.Errors[0].Description));
+        }
+        private static async Task<IResult> GetAllTestimonials(string category, TestimonialRoutes routes)
+        {
+            var result = await routes.GetAllTestimonials(category);
+
+            return result.Match(
+                testimonials => TypedResults.Ok(testimonials),
+                errors => Results.Problem(result.Errors[0].Description));
         }
         private static async Task<IResult> CreateTestimonial(PostTestimonialRequest body, TestimonialRoutes routes)
         {
-            await routes.CreateTestimonial(body);
-            return TypedResults.Ok();
+            var result = await routes.CreateTestimonial(body);
+
+            return result.Match(
+                testimonials => TypedResults.Ok(testimonials),
+                errors => Results.Problem(result.Errors[0].Description));
         }
         private static async Task<IResult> UpdateTestimonial(Guid id, UpdateTestimonialRequest body, TestimonialRoutes routes)
         {
-            await routes.UpdateTestimonial(id, body);
-            return TypedResults.Ok();
+           var result = await routes.UpdateTestimonial(id, body);
+
+            return result.Match(
+                testimonials => TypedResults.Ok(testimonials),
+                errors => Results.Problem(result.Errors[0].Description));
         }
         private static async Task<IResult> DeleteTestimonial(Guid id, TestimonialRoutes routes)
         {
-            await routes.DeleteTestimonial(id);
-            return TypedResults.Ok();
+            var result = await routes.DeleteTestimonial(id);
+
+            return result.Match(
+                testimonials => TypedResults.NoContent(),
+                errors => Results.Problem(result.Errors[0].Code, statusCode: 404));
         }
     }
 }
