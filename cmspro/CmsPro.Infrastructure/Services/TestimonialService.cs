@@ -1,8 +1,8 @@
-﻿using CmsPro.Infrastructure.Persistence;
-using CmsPro.Domain.Entities;
+﻿using CmsPro.Application.DTO;
 using CmsPro.Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using CmsPro.Application.DTO;
+using CmsPro.Domain.Entities;
+using CmsPro.Infrastructure.Persistence;
+using ErrorOr;
 
 namespace CmsPro.Infrastructure.Services
 {
@@ -13,30 +13,23 @@ namespace CmsPro.Infrastructure.Services
         {
             _db = db;
         }
-        public async Task<Testimonial> GetTestimonial(Guid id)
+        public async Task<ErrorOr<Testimonial>> GetTestimonial(Guid id)
         {
             var testimonial = await _db.Testimonials.FindAsync(id);
             
             if (testimonial is null)
-            {
-                throw new Exception($"Testimonial with id {id} not found.");
-            }
-            
+                return Error.NotFound($"Testimonial with id {id} not found.");
+
             return testimonial;
         }
 
-        public async Task<List<Testimonial>> GetTestimonials(Guid id, string category)
+        public async Task<ErrorOr<List<Testimonial>>> GetTestimonials(string category)
         {
-            var list = await _db.Testimonials.Where(t => t.Id == id).ToListAsync();
-
-            if (!String.IsNullOrEmpty(category))
-            {
-                list = list.Where(t => t.Category != null && t.Category.Name == category).ToList();
-            }
-
+            var list = _db.Testimonials.Where(t => t.Category != null && t.Category.Name.ToLower() == category.ToLower()).ToList();
+             
             return list;
         }
-        public async Task<Testimonial> PostTestimonial(PostTestimonialRequest body)
+        public async Task<ErrorOr<Testimonial>> PostTestimonial(PostTestimonialRequest body)
         {
             Testimonial newTestimonial = body.ToTestimonial();
 
@@ -44,31 +37,28 @@ namespace CmsPro.Infrastructure.Services
             await _db.SaveChangesAsync();
             return newTestimonial;
         }
-        public async Task<Testimonial> UpdateTestimonial(Guid id, UpdateTestimonialRequest updatedTestimonial)
+        public async Task<ErrorOr<Testimonial>> UpdateTestimonial(Guid id, UpdateTestimonialRequest updatedTestimonial)
         {
             var testimonial = await _db.Testimonials.FindAsync(id);
-            
-            if (testimonial is null)
-            {
-                //TODO: Crear custom exceptions
-                throw new Exception($"Testimonial with id {id} not found.");
-            }
+
+            if (testimonial is null || testimonial.IsDeleted)
+                return Error.NotFound($"Testimonial with id {id} not found.");
 
             testimonial.ApplyUpdate(updatedTestimonial);
             await _db.SaveChangesAsync();
             return testimonial;
         }
-        public async Task DeleteTestimonial(Guid id)
+        public async Task<ErrorOr<Deleted>> DeleteTestimonial(Guid id)
         {
             var testimonial = await _db.Testimonials.FindAsync(id);
 
-            if (testimonial is null)
-                throw new Exception($"Testimonial with id {id} not found.");
+            if (testimonial is null || testimonial.IsDeleted)
+                return Error.NotFound($"Testimonial with id {id} not found.");
 
             testimonial.IsDeleted = true;
             await _db.SaveChangesAsync();
 
-            return;
+            return Result.Deleted;
         }
     }
 }

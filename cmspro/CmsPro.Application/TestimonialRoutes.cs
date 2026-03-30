@@ -1,6 +1,5 @@
 ﻿using CmsPro.Application.DTO;
 using CmsPro.Application.Interfaces;
-using CmsPro.Domain.Entities;
 using ErrorOr;
 
 namespace CmsPro.API
@@ -20,33 +19,37 @@ namespace CmsPro.API
                 : result.Value.ToGetTestimonialResponse();
         }
 
-        public async Task<ErrorOr<List<GetTestimonialResponse>>> GetAllTestimonials(Guid id, string category)
+        public async Task<ErrorOr<List<GetTestimonialResponse>>> GetAllTestimonials(string category)
         {
-            var result = await _repository.GetTestimonials(id, category);
+            var result = await _repository.GetTestimonials(category);
 
             return result.IsError
                 ? result.Errors
                 : result.Value.Select(t => t.ToGetTestimonialResponse()).ToList();
         }
 
-        public async Task CreateTestimonial(PostTestimonialRequest body)
+        public async Task<ErrorOr<GetTestimonialResponse>> CreateTestimonial(PostTestimonialRequest body)
         {
-            await _repository.PostTestimonial(body);
+            var result = await _repository.PostTestimonial(body);
 
-            return;
+            return result.IsError
+                ? result.Errors
+                : result.Value.ToGetTestimonialResponse();
         }
 
-        public async Task UpdateTestimonial(Guid id, UpdateTestimonialRequest body)
+        public async Task<ErrorOr<GetTestimonialResponse>> UpdateTestimonial(Guid id, UpdateTestimonialRequest body)
         {
-            await _repository.UpdateTestimonial(id, body);
+            var result = await _repository.UpdateTestimonial(id, body);
 
-            return;
+            return result.IsError
+                ? result.Errors
+                : result.Value.ToGetTestimonialResponse();
         }
-        public async Task DeleteTestimonial(Guid id)
+        public async Task<ErrorOr<Deleted>> DeleteTestimonial(Guid id)
         {
-            await _repository.DeleteTestimonial(id);
+            var result = await _repository.DeleteTestimonial(id);
 
-            return;
+            return result;
         }
     }
 }

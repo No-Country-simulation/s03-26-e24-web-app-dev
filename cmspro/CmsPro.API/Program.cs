@@ -11,8 +11,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
+builder.Services.AddScoped<TestimonialRoutes>();
 builder.Services.AddScoped<ITestimonyRepository, TestimonialService>();
 builder.Services.AddValidation();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
