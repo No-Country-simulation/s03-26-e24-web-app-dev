@@ -1,6 +1,7 @@
 ﻿using CmsPro.Application.DTO;
 using CmsPro.Application.Interfaces;
 using CmsPro.Domain.Entities;
+using ErrorOr;
 
 namespace CmsPro.API
 {
@@ -10,17 +11,22 @@ namespace CmsPro.API
         public TestimonialRoutes(ITestimonyRepository repository) {
             _repository = repository;
         }
-        public async Task<GetTestimonialResponse> GetTestimonial(Guid id)
+        public async Task<ErrorOr<GetTestimonialResponse>> GetTestimonial(Guid id)
         {
-            Testimonial testimonial = await _repository.GetTestimonial(id);
+            var result = await _repository.GetTestimonial(id);
 
-            return testimonial.ToGetTestimonialResponse();
+            return result.IsError
+                ? result.Errors
+                : result.Value.ToGetTestimonialResponse();
         }
 
-        public async Task<List<GetTestimonialResponse>> GetAllTestimonials(Guid id, string category)
+        public async Task<ErrorOr<List<GetTestimonialResponse>>> GetAllTestimonials(Guid id, string category)
         {
-            List<Testimonial> testimonials = await _repository.GetTestimonials(id, category);
-            return testimonials.Select(t => t.ToGetTestimonialResponse()).ToList();
+            var result = await _repository.GetTestimonials(id, category);
+
+            return result.IsError
+                ? result.Errors
+                : result.Value.Select(t => t.ToGetTestimonialResponse()).ToList();
         }
 
         public async Task CreateTestimonial(PostTestimonialRequest body)
