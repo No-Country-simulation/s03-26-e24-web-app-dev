@@ -1,0 +1,19 @@
+{
+  "name": "@cmspro/embed",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/widget.js",
+  "types": "dist/widget.d.ts",
+  "scripts": {
+    "build": "tsup src/widget.tsx --format iife --global-name CmsProWidget",
+    "dev": "tsup src/widget.tsx --format iife --global-name CmsProWidget --watch"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.0"
+  }
+}
