@@ -8,6 +8,8 @@ public class TestimonialConfiguration : IEntityTypeConfiguration<Testimonial>
 {
     public void Configure(EntityTypeBuilder<Testimonial> builder)
     {
+        builder.ToTable("Testimonial");
+        
         builder.HasKey(t => t.Id);
 
         builder.Property(t => t.Content)
