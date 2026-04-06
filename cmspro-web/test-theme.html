@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Theme</title>
+  <link rel="stylesheet" href="http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__0ojnr7l._.css">
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      console.log('Theme changed to:', next);
+    }
+  </script>
+  <style>
+    body {
+      padding: 40px;
+      background: var(--background);
+      color: var(--foreground);
+      transition: all 0.3s;
+    }
+    button {
+      padding: 12px 24px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .info {
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--card);
+      color: var(--card-foreground);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test de Cambio de Tema</h1>
+  <button onclick="toggleTheme()">Cambiar Tema</button>
+  <div class="info">
+    <p>Tema actual: <span id="current-theme"></span></p>
+    <p>Este texto debe cambiar de color al alternar el tema.</p>
+  </div>
+  <script>
+    const updateThemeDisplay = () => {
+      const theme = document.documentElement.getAttribute('data-theme') || 'light';
+      document.getElementById('current-theme').textContent = theme;
+    };
+    updateThemeDisplay();
+    const observer = new MutationObserver(updateThemeDisplay);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  </script>
+</body>
+</html>

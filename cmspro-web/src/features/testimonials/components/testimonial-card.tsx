@@ -1,7 +1,12 @@
+'use client';
+
+import { memo, useMemo } from 'react';
 import Image from 'next/image';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { StatusBadge } from '@/components/shared/status-badge';
 import { cn } from '@/lib/utils';
 import type { Testimony } from '@/types';
-import { TESTIMONY_STATUS } from '@/config/constants';
 
 interface TestimonialCardProps {
   testimonial: Testimony;
@@ -9,64 +14,73 @@ interface TestimonialCardProps {
   className?: string;
 }
 
-export function TestimonialCard({ testimonial, onClick, className }: TestimonialCardProps) {
-  const statusConfig = TESTIMONY_STATUS[testimonial.status];
-  const image = testimonial.mediaFiles.find((m) => m.type === 'Image');
+export const TestimonialCard = memo(function TestimonialCard({
+  testimonial,
+  onClick,
+  className,
+}: TestimonialCardProps) {
+  const image = useMemo(
+    () => testimonial.mediaFiles.find((m) => m.type === 'Image'),
+    [testimonial.mediaFiles]
+  );
+  
+  const initials = useMemo(
+    () =>
+      testimonial.authorName
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2),
+    [testimonial.authorName]
+  );
 
   return (
-    <article
+    <Card
       onClick={onClick}
       className={cn(
-        'group relative flex cursor-pointer flex-col overflow-hidden rounded-lg border bg-card p-4 shadow-sm transition-all hover:shadow-md',
+        'group cursor-pointer transition-all hover:shadow-md',
         className
       )}
     >
-      {/* Status badge */}
-      <span
-        className={cn(
-          'absolute right-2 top-2 rounded-full px-2 py-0.5 text-xs font-medium',
-          {
-            'bg-gray-100 text-gray-700': statusConfig.color === 'gray',
-            'bg-yellow-100 text-yellow-700': statusConfig.color === 'yellow',
-            'bg-green-100 text-green-700': statusConfig.color === 'green',
-            'bg-red-100 text-red-700': statusConfig.color === 'red',
-          }
-        )}
-      >
-        {statusConfig.label}
-      </span>
-
-      {/* Image */}
-      {image && (
-        <div className="relative mb-3 aspect-video w-full overflow-hidden rounded-md">
-          <Image
-            src={image.url}
-            alt={testimonial.title}
-            fill
-            className="object-cover"
-          />
+      <CardContent className="p-4">
+        {/* Status */}
+        <div className="mb-3 flex justify-end">
+          <StatusBadge status={testimonial.status} />
         </div>
-      )}
 
-      {/* Content */}
-      <blockquote className="mb-3 flex-1 text-sm text-muted-foreground">
-        &ldquo;{testimonial.body}&rdquo;
-      </blockquote>
-
-      {/* Author */}
-      <footer className="mt-auto">
-        <p className="font-medium text-foreground">{testimonial.authorName}</p>
-        {testimonial.authorRole && (
-          <p className="text-xs text-muted-foreground">{testimonial.authorRole}</p>
+        {/* Image */}
+        {image && (
+          <div className="relative mb-4 aspect-video w-full overflow-hidden rounded-md">
+            <Image
+              src={image.url}
+              alt={testimonial.title}
+              fill
+              className="object-cover transition-transform group-hover:scale-105"
+            />
+          </div>
         )}
-      </footer>
 
-      {/* Category tag */}
-      {testimonial.category && (
-        <span className="mt-2 inline-block self-start rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
-          {testimonial.category.name}
-        </span>
-      )}
-    </article>
+        {/* Quote */}
+        <blockquote className="mb-4 text-sm italic text-muted-foreground">
+          &ldquo;{testimonial.body}&rdquo;
+        </blockquote>
+      </CardContent>
+
+      <CardFooter className="flex items-center gap-3 border-t px-4 py-3">
+        <Avatar className="h-10 w-10">
+          <AvatarImage src="" alt={testimonial.authorName} />
+          <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+        </Avatar>
+        <div className="flex-1 min-w-0">
+          <p className="truncate text-sm font-medium">{testimonial.authorName}</p>
+          {testimonial.authorRole && (
+            <p className="truncate text-xs text-muted-foreground">
+              {testimonial.authorRole}
+            </p>
+          )}
+        </div>
+      </CardFooter>
+    </Card>
   );
-}
+});

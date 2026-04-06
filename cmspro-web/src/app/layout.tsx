@@ -1,9 +1,22 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { DM_Serif_Display, Karla } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/providers';
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ['latin'] });
+const dmSerif = DM_Serif_Display({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const karla = Karla({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Testimonial CMS',
@@ -16,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="es" suppressHydrationWarning className={cn(dmSerif.variable, karla.variable)}>
+      <body className={cn("font-sans antialiased", karla.className)}>
         <Providers>{children}</Providers>
       </body>
     </html>

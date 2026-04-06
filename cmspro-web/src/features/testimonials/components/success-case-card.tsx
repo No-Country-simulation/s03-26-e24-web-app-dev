@@ -1,7 +1,15 @@
+'use client';
+
+import { memo, useMemo, useCallback } from 'react';
 import Image from 'next/image';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { StatusBadge } from '@/components/shared/status-badge';
 import { cn } from '@/lib/utils';
 import type { Testimony } from '@/types';
-import { TESTIMONY_STATUS } from '@/config/constants';
+import { ArrowRight, Star } from 'lucide-react';
 
 interface SuccessCaseCardProps {
   testimony: Testimony;
@@ -10,94 +18,110 @@ interface SuccessCaseCardProps {
   className?: string;
 }
 
-export function SuccessCaseCard({
+export const SuccessCaseCard = memo(function SuccessCaseCard({
   testimony,
   onClick,
   onReadMore,
   className,
 }: SuccessCaseCardProps) {
-  const statusConfig = TESTIMONY_STATUS[testimony.status];
-  const image = testimony.mediaFiles.find((m) => m.type === 'Image');
+  const image = useMemo(
+    () => testimony.mediaFiles.find((m) => m.type === 'Image'),
+    [testimony.mediaFiles]
+  );
+  
+  const initials = useMemo(
+    () =>
+      testimony.authorName
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2),
+    [testimony.authorName]
+  );
 
-  const handleReadMore = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onReadMore?.();
-  };
+  const handleReadMore = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onReadMore?.();
+    },
+    [onReadMore]
+  );
 
   return (
-    <article
+    <Card
       onClick={onClick}
       className={cn(
-        'group relative flex cursor-pointer flex-col overflow-hidden rounded-lg border-2 border-primary/20 bg-card p-5 shadow-md transition-all hover:border-primary/40 hover:shadow-lg',
-        // Success cases are larger/more prominent
-        'min-h-[280px]',
+        'group relative cursor-pointer overflow-hidden border-2 border-primary/20 transition-all hover:border-primary/40 hover:shadow-lg',
         className
       )}
     >
-      {/* Featured badge */}
-      <span className="absolute left-2 top-2 rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
-        Caso de Éxito
-      </span>
+      {/* Featured Badge */}
+      <div className="absolute left-3 top-3 z-10">
+        <Badge className="gap-1 bg-primary">
+          <Star className="h-3 w-3 fill-current" />
+          Caso de Éxito
+        </Badge>
+      </div>
 
-      {/* Status badge */}
-      <span
-        className={cn(
-          'absolute right-2 top-2 rounded-full px-2 py-0.5 text-xs font-medium',
-          {
-            'bg-gray-100 text-gray-700': statusConfig.color === 'gray',
-            'bg-yellow-100 text-yellow-700': statusConfig.color === 'yellow',
-            'bg-green-100 text-green-700': statusConfig.color === 'green',
-            'bg-red-100 text-red-700': statusConfig.color === 'red',
-          }
-        )}
-      >
-        {statusConfig.label}
-      </span>
+      {/* Status Badge */}
+      <div className="absolute right-3 top-3 z-10">
+        <StatusBadge status={testimony.status} />
+      </div>
 
       {/* Image */}
       {image && (
-        <div className="relative mb-4 mt-6 aspect-video w-full overflow-hidden rounded-md">
+        <div className="relative aspect-video w-full overflow-hidden">
           <Image
             src={image.url}
             alt={testimony.title}
             fill
-            className="object-cover transition-transform group-hover:scale-105"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
         </div>
       )}
 
-      {/* Title */}
-      <h3 className="mb-2 mt-4 text-lg font-semibold text-foreground">
-        {testimony.title}
-      </h3>
+      <CardHeader className={cn(!image && 'pt-12')}>
+        <h3 className="text-lg font-semibold leading-tight">{testimony.title}</h3>
+      </CardHeader>
 
-      {/* Preview text */}
-      <blockquote className="mb-4 flex-1 text-sm text-muted-foreground line-clamp-3">
-        &ldquo;{testimony.body}&rdquo;
-      </blockquote>
+      <CardContent className="pb-2">
+        {/* Preview Quote */}
+        <blockquote className="line-clamp-3 text-sm text-muted-foreground">
+          &ldquo;{testimony.body}&rdquo;
+        </blockquote>
 
-      {/* Read more button */}
-      <button
-        onClick={handleReadMore}
-        className="mb-3 self-start text-sm font-medium text-primary hover:underline"
-      >
-        Leer más →
-      </button>
+        {/* Read More Button */}
+        <Button
+          variant="link"
+          className="mt-2 h-auto p-0 text-primary"
+          onClick={handleReadMore}
+        >
+          Leer más
+          <ArrowRight className="ml-1 h-4 w-4" />
+        </Button>
+      </CardContent>
 
-      {/* Author */}
-      <footer className="mt-auto border-t pt-3">
-        <p className="font-medium text-foreground">{testimony.authorName}</p>
-        {testimony.authorRole && (
-          <p className="text-xs text-muted-foreground">{testimony.authorRole}</p>
+      <CardFooter className="flex items-center gap-3 border-t pt-4">
+        <Avatar className="h-10 w-10">
+          <AvatarImage src="" alt={testimony.authorName} />
+          <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+        </Avatar>
+        <div className="flex-1 min-w-0">
+          <p className="truncate text-sm font-medium">{testimony.authorName}</p>
+          {testimony.authorRole && (
+            <p className="truncate text-xs text-muted-foreground">
+              {testimony.authorRole}
+            </p>
+          )}
+        </div>
+        {testimony.category && (
+          <Badge variant="secondary" className="shrink-0">
+            {testimony.category.name}
+          </Badge>
         )}
-      </footer>
-
-      {/* Category tag */}
-      {testimony.category && (
-        <span className="mt-2 inline-block self-start rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
-          {testimony.category.name}
-        </span>
-      )}
-    </article>
+      </CardFooter>
+    </Card>
   );
-}
+});

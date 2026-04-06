@@ -1,4 +1,13 @@
-import { LucideIcon, LayoutDashboard, FileText, Shield, BarChart3, Settings, Tags, FolderOpen } from 'lucide-react';
+import {
+  LucideIcon,
+  LayoutDashboard,
+  FileText,
+  Shield,
+  BarChart3,
+  Settings,
+  Tags,
+  FolderOpen,
+} from 'lucide-react';
 import type { UserRole } from '@/types';
 
 export interface NavItem {
@@ -18,37 +27,37 @@ export const dashboardNavigation: NavItem[] = [
   },
   {
     title: 'Testimonios',
-    href: '/testimonials',
+    href: '/dashboard/testimonials',
     icon: FileText,
     roles: ['Admin', 'Editor'],
   },
   {
     title: 'Moderación',
-    href: '/moderation',
+    href: '/dashboard/moderation',
     icon: Shield,
     roles: ['Admin'],
   },
   {
     title: 'Analítica',
-    href: '/analytics',
+    href: '/dashboard/analytics',
     icon: BarChart3,
     roles: ['Admin'],
   },
   {
     title: 'Configuración',
-    href: '/settings',
+    href: '/dashboard/settings',
     icon: Settings,
     roles: ['Admin'],
     children: [
       {
         title: 'Categorías',
-        href: '/settings/categories',
+        href: '/dashboard/settings/categories',
         icon: FolderOpen,
         roles: ['Admin'],
       },
       {
         title: 'Tags',
-        href: '/settings/tags',
+        href: '/dashboard/settings/tags',
         icon: Tags,
         roles: ['Admin'],
       },
