@@ -1,7 +1,9 @@
 using CmsPro.API;
 using CmsPro.Application.Interfaces;
+using CmsPro.Domain.Entities;
 using CmsPro.Infrastructure.Persistence;
 using CmsPro.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,11 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<TestimonialRoutes>();
 builder.Services.AddScoped<ITestimonyRepository, TestimonialService>();
