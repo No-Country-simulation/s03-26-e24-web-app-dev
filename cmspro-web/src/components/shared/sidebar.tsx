@@ -21,7 +21,7 @@ import {
 import { dashboardNavigation, type NavItem } from '@/config/navigation';
 import { useAuth } from '@/providers/auth-provider';
 import { Menu, ChevronDown, MessageSquareQuote, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface SidebarProps {
   collapsed?: boolean;
@@ -82,9 +82,18 @@ function NavItemComponent({
   level?: number;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+  const isActive =
+    item.href === '/dashboard'
+      ? pathname === '/dashboard'
+      : pathname === item.href || pathname.startsWith(item.href + '/');
   const hasChildren = item.children && item.children.length > 0;
   const [isOpen, setIsOpen] = useState(isActive);
+
+  useEffect(() => {
+    if (hasChildren && isActive) {
+      setIsOpen(true);
+    }
+  }, [hasChildren, isActive]);
 
   const Icon = item.icon;
 
