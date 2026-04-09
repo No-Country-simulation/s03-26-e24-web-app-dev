@@ -26,13 +26,16 @@ public class Testimonial
     public Guid CategoryId { get; set; }
 
     public Category? Category { get; private set; }
+    
+    public TestimonialCopy? TestimonialCopy { get; set; }
+    public ICollection<MediaAsset> MediaAssets { get; set; } = new List<MediaAsset>();
 
     // Constructor principal
     public Testimonial(string authorName, string content, Guid categoryId, MultimediaType format, string? multimediaUrl)
     {
 
         if (string.IsNullOrWhiteSpace(authorName)) throw new ArgumentException("El campo Author es requerido.");
-        if (string.IsNullOrWhiteSpace(authorName)) throw new ArgumentException("El campo Content es requerido.");
+        if (string.IsNullOrWhiteSpace(content)) throw new ArgumentException("El campo Content es requerido.");
 
         Id = Guid.NewGuid();
         AuthorName = authorName;
