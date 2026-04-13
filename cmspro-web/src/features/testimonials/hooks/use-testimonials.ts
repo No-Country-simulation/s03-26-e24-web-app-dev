@@ -1,13 +1,17 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { testimonialService, type GetTestimonialsParams } from '../services/testimonials.service';
-import type { TestimonyFormInput } from '../types';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  testimonialService,
+  type GetTestimonialsParams,
+} from "../services/testimonials.service";
+import type { TestimonyFormInput } from "../types";
 
 // Query keys factory
 export const testimonialKeys = {
-  all: ['testimonials'] as const,
-  lists: () => [...testimonialKeys.all, 'list'] as const,
-  list: (params: GetTestimonialsParams) => [...testimonialKeys.lists(), params] as const,
-  details: () => [...testimonialKeys.all, 'detail'] as const,
+  all: ["testimonials"] as const,
+  lists: () => [...testimonialKeys.all, "list"] as const,
+  list: (params: GetTestimonialsParams) =>
+    [...testimonialKeys.lists(), params] as const,
+  details: () => [...testimonialKeys.all, "detail"] as const,
   detail: (id: string) => [...testimonialKeys.details(), id] as const,
 };
 
@@ -19,12 +23,19 @@ export function useTestimonials(params: GetTestimonialsParams = {}) {
   });
 }
 
+interface UseTestimonialOptions {
+  enabled?: boolean;
+}
+
 // Get single testimonial
-export function useTestimonial(id: string) {
+export function useTestimonial(
+  id: string,
+  options: UseTestimonialOptions = {},
+) {
   return useQuery({
     queryKey: testimonialKeys.detail(id),
     queryFn: () => testimonialService.getById(id),
-    enabled: !!id,
+    enabled: options.enabled ?? !!id,
   });
 }
 
@@ -45,7 +56,8 @@ export function useUpdateTestimonial(id: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Partial<TestimonyFormInput>) => testimonialService.update(id, data),
+    mutationFn: (data: Partial<TestimonyFormInput>) =>
+      testimonialService.update(id, data),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: testimonialKeys.lists() });
       queryClient.setQueryData(testimonialKeys.detail(id), data);

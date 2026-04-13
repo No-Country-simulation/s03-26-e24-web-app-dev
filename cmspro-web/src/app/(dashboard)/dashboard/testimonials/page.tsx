@@ -1,9 +1,12 @@
-import Link from 'next/link';
-import { PageHeader } from '@/components/shared/page-header';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { PageHeader } from "@/components/shared/page-header";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -11,71 +14,80 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { StatusBadge } from '@/components/shared/status-badge';
-import { EmptyState } from '@/components/shared/empty-state';
-import { SegmentedTabs } from '@/components/shared/segmented-tabs';
-import { Plus, MoreHorizontal, Eye, Edit, Trash2, Send, FileText } from 'lucide-react';
-import type { Testimony } from '@/types';
+} from "@/components/ui/dropdown-menu";
+import { StatusBadge } from "@/components/shared/status-badge";
+import { EmptyState } from "@/components/shared/empty-state";
+import { SegmentedTabs } from "@/components/shared/segmented-tabs";
+import { CreateTestimonyModal } from "@/features/testimonials/components/create-testimony-modal";
+import {
+  Plus,
+  MoreHorizontal,
+  Eye,
+  Edit,
+  Trash2,
+  Send,
+  FileText,
+} from "lucide-react";
+import type { Testimony } from "@/types";
 
 // Mock data - replace with actual API calls
 const mockTestimonials: Testimony[] = [
   {
-    id: '1',
-    type: 'Testimonial',
-    title: 'Gran experiencia',
-    body: 'El curso superó todas mis expectativas. Los profesores son excelentes.',
+    id: "1",
+    type: "Testimonial",
+    title: "Gran experiencia",
+    body: "El curso superó todas mis expectativas. Los profesores son excelentes.",
     extendedBody: null,
-    authorName: 'María García',
-    authorRole: 'Estudiante',
-    status: 'Published',
-    categoryId: '1',
-    category: { id: '1', name: 'Cursos', slug: 'cursos' },
+    authorName: "María García",
+    authorRole: "Estudiante",
+    status: "Published",
+    categoryId: "1",
+    category: { id: "1", name: "Cursos", slug: "cursos" },
     tags: [],
     mediaFiles: [],
-    createdAt: '2024-01-15',
-    publishedAt: '2024-01-16',
-    createdBy: 'user-1',
+    createdAt: "2024-01-15",
+    publishedAt: "2024-01-16",
+    createdBy: "user-1",
   },
   {
-    id: '2',
-    type: 'SuccessCase',
-    title: 'De estudiante a profesional',
-    body: 'Gracias al programa de certificación, conseguí mi primer trabajo en tecnología.',
-    extendedBody: 'Historia completa del caso de éxito...',
-    authorName: 'Carlos López',
-    authorRole: 'Desarrollador Junior',
-    status: 'PendingReview',
-    categoryId: '2',
-    category: { id: '2', name: 'Casos de Éxito', slug: 'casos-exito' },
+    id: "2",
+    type: "SuccessCase",
+    title: "De estudiante a profesional",
+    body: "Gracias al programa de certificación, conseguí mi primer trabajo en tecnología.",
+    extendedBody: "Historia completa del caso de éxito...",
+    authorName: "Carlos López",
+    authorRole: "Desarrollador Junior",
+    status: "PendingReview",
+    categoryId: "2",
+    category: { id: "2", name: "Casos de Éxito", slug: "casos-exito" },
     tags: [],
     mediaFiles: [],
-    createdAt: '2024-01-18',
+    createdAt: "2024-01-18",
     publishedAt: null,
-    createdBy: 'user-2',
+    createdBy: "user-2",
   },
   {
-    id: '3',
-    type: 'Testimonial',
-    title: 'Excelente plataforma',
-    body: 'La plataforma es muy intuitiva y fácil de usar.',
+    id: "3",
+    type: "Testimonial",
+    title: "Excelente plataforma",
+    body: "La plataforma es muy intuitiva y fácil de usar.",
     extendedBody: null,
-    authorName: 'Ana Martínez',
-    authorRole: 'Diseñadora',
-    status: 'Draft',
-    categoryId: '1',
-    category: { id: '1', name: 'Cursos', slug: 'cursos' },
+    authorName: "Ana Martínez",
+    authorRole: "Diseñadora",
+    status: "Draft",
+    categoryId: "1",
+    category: { id: "1", name: "Cursos", slug: "cursos" },
     tags: [],
     mediaFiles: [],
-    createdAt: '2024-01-20',
+    createdAt: "2024-01-20",
     publishedAt: null,
-    createdBy: 'user-3',
+    createdBy: "user-3",
   },
 ];
 
@@ -96,14 +108,18 @@ function TestimonialRow({ testimony }: { testimony: Testimony }) {
         </div>
       </TableCell>
       <TableCell className="py-4">
-        <Badge variant={testimony.type === 'SuccessCase' ? 'default' : 'secondary'}>
-          {testimony.type === 'SuccessCase' ? 'Caso de Éxito' : 'Testimonio'}
+        <Badge
+          variant={testimony.type === "SuccessCase" ? "default" : "secondary"}
+        >
+          {testimony.type === "SuccessCase" ? "Caso de Éxito" : "Testimonio"}
         </Badge>
       </TableCell>
       <TableCell className="py-4">
         <div>
           <p className="text-sm font-medium">{testimony.authorName}</p>
-          <p className="text-xs text-muted-foreground">{testimony.authorRole}</p>
+          <p className="text-xs text-muted-foreground">
+            {testimony.authorRole}
+          </p>
         </div>
       </TableCell>
       <TableCell className="py-4">
@@ -133,7 +149,7 @@ function TestimonialRow({ testimony }: { testimony: Testimony }) {
                 Editar
               </Link>
             </DropdownMenuItem>
-            {testimony.status === 'Draft' && (
+            {testimony.status === "Draft" && (
               <DropdownMenuItem>
                 <Send className="mr-2 h-4 w-4" />
                 Enviar a revisión
@@ -151,10 +167,44 @@ function TestimonialRow({ testimony }: { testimony: Testimony }) {
 }
 
 export default function TestimonialsAdminPage() {
-  const testimonials = mockTestimonials;
-  const publishedTestimonials = testimonials.filter((item) => item.status === 'Published');
-  const pendingTestimonials = testimonials.filter((item) => item.status === 'PendingReview');
-  const draftTestimonials = testimonials.filter((item) => item.status === 'Draft');
+  const [testimonials, setTestimonials] =
+    useState<Testimony[]>(mockTestimonials);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [openedFromQueryParam, setOpenedFromQueryParam] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("new") === "1") {
+      setIsCreateModalOpen(true);
+      setOpenedFromQueryParam(true);
+    }
+  }, []);
+
+  const handleCreateModalOpenChange = (open: boolean) => {
+    setIsCreateModalOpen(open);
+
+    if (!open && openedFromQueryParam) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("new");
+      window.history.replaceState({}, "", `${url.pathname}${url.search}`);
+      setOpenedFromQueryParam(false);
+    }
+  };
+
+  const handleCreated = (newTestimony: Testimony) => {
+    setTestimonials((prev) => [newTestimony, ...prev]);
+  };
+
+  const publishedTestimonials = testimonials.filter(
+    (item) => item.status === "Published",
+  );
+  const pendingTestimonials = testimonials.filter(
+    (item) => item.status === "PendingReview",
+  );
+  const draftTestimonials = testimonials.filter(
+    (item) => item.status === "Draft",
+  );
   const isEmpty = testimonials.length === 0;
 
   const renderTable = (rows: Testimony[]) => {
@@ -199,11 +249,9 @@ export default function TestimonialsAdminPage() {
         title="Testimonios"
         description="Gestiona los testimonios y casos de éxito"
         actions={
-          <Button asChild>
-            <Link href="/dashboard/testimonials/new">
-              <Plus className="mr-2 h-4 w-4" />
-              Nuevo Testimonio
-            </Link>
+          <Button onClick={() => setIsCreateModalOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Nuevo Testimonio
           </Button>
         }
       />
@@ -214,10 +262,22 @@ export default function TestimonialsAdminPage() {
           className="pb-1"
           listClassName="max-w-full"
           items={[
-            { value: 'all', label: 'Todos', count: testimonials.length },
-            { value: 'published', label: 'Publicados', count: publishedTestimonials.length },
-            { value: 'pending', label: 'Pendientes', count: pendingTestimonials.length },
-            { value: 'draft', label: 'Borradores', count: draftTestimonials.length },
+            { value: "all", label: "Todos", count: testimonials.length },
+            {
+              value: "published",
+              label: "Publicados",
+              count: publishedTestimonials.length,
+            },
+            {
+              value: "pending",
+              label: "Pendientes",
+              count: pendingTestimonials.length,
+            },
+            {
+              value: "draft",
+              label: "Borradores",
+              count: draftTestimonials.length,
+            },
           ]}
         />
 
@@ -228,11 +288,13 @@ export default function TestimonialsAdminPage() {
               title="No hay testimonios"
               description="Comienza creando tu primer testimonio o caso de éxito."
               action={{
-                label: 'Crear testimonio',
-                href: '/dashboard/testimonials/new',
+                label: "Crear testimonio",
+                onClick: () => setIsCreateModalOpen(true),
               }}
             />
-          ) : renderTable(testimonials)}
+          ) : (
+            renderTable(testimonials)
+          )}
         </TabsContent>
 
         <TabsContent value="published" className="mt-0">
@@ -247,6 +309,12 @@ export default function TestimonialsAdminPage() {
           {renderTable(draftTestimonials)}
         </TabsContent>
       </Tabs>
+
+      <CreateTestimonyModal
+        open={isCreateModalOpen}
+        onOpenChange={handleCreateModalOpenChange}
+        onCreated={handleCreated}
+      />
     </div>
   );
 }

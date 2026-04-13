@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { TestimonialCard } from './testimonial-card';
-import { SuccessCaseCard } from './success-case-card';
-import { EmptyState } from '@/components/shared/empty-state';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Card } from '@/components/ui/card';
-import type { Testimony } from '@/types';
-import { FileText } from 'lucide-react';
+import { useCallback, useState } from "react";
+import { TestimonialCard } from "./testimonial-card";
+import { SuccessCaseCard } from "./success-case-card";
+import { TestimonySpotlightModal } from "./testimony-spotlight-modal";
+import { EmptyState } from "@/components/shared/empty-state";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@/components/ui/card";
+import type { Testimony } from "@/types";
+import { FileText } from "lucide-react";
 
 interface TestimonyGridProps {
   testimonials: Testimony[];
@@ -20,24 +20,25 @@ interface TestimonyGridProps {
 export function TestimonyGrid({
   testimonials,
   isLoading,
-  emptyMessage = 'No hay testimonios para mostrar',
+  emptyMessage = "No hay testimonios para mostrar",
   onCreateNew,
 }: TestimonyGridProps) {
-  const router = useRouter();
-
-  const handleClick = useCallback(
-    (testimony: Testimony) => {
-      router.push(`/testimonials/${testimony.id}`);
-    },
-    [router]
+  const [selectedTestimony, setSelectedTestimony] = useState<Testimony | null>(
+    null,
   );
+  const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
 
-  const handleReadMore = useCallback(
-    (testimony: Testimony) => {
-      router.push(`/testimonials/${testimony.id}`);
-    },
-    [router]
-  );
+  const handleOpenSpotlight = useCallback((testimony: Testimony) => {
+    setSelectedTestimony(testimony);
+    setIsSpotlightOpen(true);
+  }, []);
+
+  const handleModalOpenChange = useCallback((open: boolean) => {
+    setIsSpotlightOpen(open);
+    if (!open) {
+      setSelectedTestimony(null);
+    }
+  }, []);
 
   if (isLoading) {
     return (
@@ -71,7 +72,7 @@ export function TestimonyGrid({
         description="Los testimonios aparecerán aquí una vez que sean creados y publicados."
         action={
           onCreateNew
-            ? { label: 'Crear testimonio', onClick: onCreateNew }
+            ? { label: "Crear testimonio", onClick: onCreateNew }
             : undefined
         }
       />
@@ -79,23 +80,32 @@ export function TestimonyGrid({
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {testimonials.map((testimony) =>
-        testimony.type === 'SuccessCase' ? (
-          <SuccessCaseCard
-            key={testimony.id}
-            testimony={testimony}
-            onClick={() => handleClick(testimony)}
-            onReadMore={() => handleReadMore(testimony)}
-          />
-        ) : (
-          <TestimonialCard
-            key={testimony.id}
-            testimonial={testimony}
-            onClick={() => handleClick(testimony)}
-          />
-        )
-      )}
-    </div>
+    <>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {testimonials.map((testimony) =>
+          testimony.type === "SuccessCase" ? (
+            <SuccessCaseCard
+              key={testimony.id}
+              testimony={testimony}
+              onClick={() => handleOpenSpotlight(testimony)}
+              onReadMore={() => handleOpenSpotlight(testimony)}
+            />
+          ) : (
+            <TestimonialCard
+              key={testimony.id}
+              testimonial={testimony}
+              onClick={() => handleOpenSpotlight(testimony)}
+            />
+          ),
+        )}
+      </div>
+
+      <TestimonySpotlightModal
+        open={isSpotlightOpen}
+        onOpenChange={handleModalOpenChange}
+        testimony={selectedTestimony}
+        enableBackendSync
+      />
+    </>
   );
 }

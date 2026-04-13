@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { PageHeader } from '@/components/shared/page-header';
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/shared/page-header";
 import {
   FileText,
   Clock,
@@ -10,64 +10,64 @@ import {
   TrendingUp,
   ArrowUpRight,
   Plus,
-} from 'lucide-react';
+} from "lucide-react";
 
 // Mock data - replace with actual API calls
 const stats = [
   {
-    title: 'Total Testimonios',
-    value: '24',
-    change: '+12%',
+    title: "Total Testimonios",
+    value: "24",
+    change: "+12%",
     icon: FileText,
-    href: '/dashboard/testimonials',
+    href: "/dashboard/testimonials",
   },
   {
-    title: 'Pendientes',
-    value: '5',
-    change: '+3',
+    title: "Pendientes",
+    value: "5",
+    change: "+3",
     icon: Clock,
-    href: '/dashboard/moderation',
+    href: "/dashboard/moderation",
   },
   {
-    title: 'Publicados',
-    value: '18',
-    change: '+8%',
+    title: "Publicados",
+    value: "18",
+    change: "+8%",
     icon: CheckCircle,
-    href: '/dashboard/testimonials?status=published',
+    href: "/dashboard/testimonials?status=published",
   },
   {
-    title: 'Vistas Totales',
-    value: '1,234',
-    change: '+24%',
+    title: "Vistas Totales",
+    value: "1,234",
+    change: "+24%",
     icon: Eye,
-    href: '/dashboard/analytics',
+    href: "/dashboard/analytics",
   },
 ];
 
 const recentActivity = [
   {
-    id: '1',
-    action: 'Nuevo testimonio creado',
-    author: 'María García',
-    time: 'Hace 5 minutos',
+    id: "1",
+    action: "Nuevo testimonio creado",
+    author: "María García",
+    time: "Hace 5 minutos",
   },
   {
-    id: '2',
-    action: 'Testimonio aprobado',
-    author: 'Admin',
-    time: 'Hace 1 hora',
+    id: "2",
+    action: "Testimonio aprobado",
+    author: "Admin",
+    time: "Hace 1 hora",
   },
   {
-    id: '3',
-    action: 'Caso de éxito editado',
-    author: 'Carlos López',
-    time: 'Hace 2 horas',
+    id: "3",
+    action: "Caso de éxito editado",
+    author: "Carlos López",
+    time: "Hace 2 horas",
   },
   {
-    id: '4',
-    action: 'Testimonio rechazado',
-    author: 'Admin',
-    time: 'Hace 3 horas',
+    id: "4",
+    action: "Testimonio rechazado",
+    author: "Admin",
+    time: "Hace 3 horas",
   },
 ];
 
@@ -79,7 +79,7 @@ export default function DashboardPage() {
         description="Bienvenido al panel de administración de testimonios"
         actions={
           <Button asChild>
-            <Link href="/dashboard/testimonials/new">
+            <Link href="/dashboard/testimonials?new=1">
               <Plus className="mr-2 h-4 w-4" />
               Nuevo Testimonio
             </Link>
@@ -104,7 +104,9 @@ export default function DashboardPage() {
                 <Icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="font-display text-3xl leading-none">{stat.value}</div>
+                <div className="font-display text-3xl leading-none">
+                  {stat.value}
+                </div>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <TrendingUp className="h-3 w-3 text-green-500" />
                   <span className="text-green-500">{stat.change}</span>
@@ -126,7 +128,9 @@ export default function DashboardPage() {
         {/* Recent Activity */}
         <Card className="border-border/70">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="font-display text-2xl">Actividad Reciente</CardTitle>
+            <CardTitle className="font-display text-2xl">
+              Actividad Reciente
+            </CardTitle>
             <Button variant="ghost" size="sm" asChild>
               <Link href="/dashboard/activity">
                 Ver todo
@@ -159,11 +163,13 @@ export default function DashboardPage() {
         {/* Quick Actions */}
         <Card className="border-border/70">
           <CardHeader>
-            <CardTitle className="font-display text-2xl">Acciones Rápidas</CardTitle>
+            <CardTitle className="font-display text-2xl">
+              Acciones Rápidas
+            </CardTitle>
           </CardHeader>
           <CardContent className="grid gap-3">
             <Button variant="outline" className="justify-start" asChild>
-              <Link href="/dashboard/testimonials/new">
+              <Link href="/dashboard/testimonials?new=1">
                 <Plus className="mr-2 h-4 w-4" />
                 Crear nuevo testimonio
               </Link>
