@@ -1,9 +1,14 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/shared/theme-toggle';
-import { MessageSquareQuote } from 'lucide-react';
+"use client";
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { MessageSquareQuote } from "lucide-react";
+import { useAuth } from "@/providers/auth-provider";
 
 export function PublicNavbar() {
+  const { isAuthenticated, user } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -31,9 +36,17 @@ export function PublicNavbar() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button asChild variant="outline" size="sm">
-            <Link href="/login">Iniciar sesión</Link>
-          </Button>
+          {!isAuthenticated ? (
+            <Button asChild variant="outline" size="sm">
+              <Link href="/login">Iniciar sesión</Link>
+            </Button>
+          ) : (
+            <Button asChild variant="outline" size="sm">
+              <Link href="/dashboard">
+                {user?.role === "Admin" ? "Ir a moderación" : "Ir a dashboard"}
+              </Link>
+            </Button>
+          )}
           <Button asChild size="sm">
             <Link href="/dashboard">Dashboard</Link>
           </Button>
@@ -121,8 +134,8 @@ export function PublicFooter() {
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Testimonial CMS. Todos los derechos
-            reservados.
+            &copy; {new Date().getFullYear()} Testimonial CMS. Todos los
+            derechos reservados.
           </p>
           <p className="text-sm text-muted-foreground">
             Desarrollado por Equipo 24 | S03-26

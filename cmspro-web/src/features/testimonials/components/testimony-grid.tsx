@@ -15,6 +15,7 @@ interface TestimonyGridProps {
   isLoading?: boolean;
   emptyMessage?: string;
   onCreateNew?: () => void;
+  enableBackendSync?: boolean;
 }
 
 export function TestimonyGrid({
@@ -22,6 +23,7 @@ export function TestimonyGrid({
   isLoading,
   emptyMessage = "No hay testimonios para mostrar",
   onCreateNew,
+  enableBackendSync = false,
 }: TestimonyGridProps) {
   const [selectedTestimony, setSelectedTestimony] = useState<Testimony | null>(
     null,
@@ -104,7 +106,7 @@ export function TestimonyGrid({
         open={isSpotlightOpen}
         onOpenChange={handleModalOpenChange}
         testimony={selectedTestimony}
-        enableBackendSync
+        enableBackendSync={enableBackendSync}
       />
     </>
   );

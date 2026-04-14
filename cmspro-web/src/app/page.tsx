@@ -1,8 +1,11 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { ThemeToggle } from '@/components/shared/theme-toggle';
+"use client";
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { useAuth } from "@/providers/auth-provider";
 import {
   MessageSquareQuote,
   ArrowRight,
@@ -11,36 +14,38 @@ import {
   BarChart3,
   Code2,
   Star,
-} from 'lucide-react';
+} from "lucide-react";
 
 const features = [
   {
     icon: MessageSquareQuote,
-    title: 'Testimonios & Casos de Éxito',
+    title: "Testimonios & Casos de Éxito",
     description:
-      'Gestiona testimonios simples y casos de éxito detallados con contenido enriquecido.',
+      "Gestiona testimonios simples y casos de éxito detallados con contenido enriquecido.",
   },
   {
     icon: Shield,
-    title: 'Sistema de Moderación',
+    title: "Sistema de Moderación",
     description:
-      'Revisa cambios con vista diff antes de publicar. Control total sobre el contenido.',
+      "Revisa cambios con vista diff antes de publicar. Control total sobre el contenido.",
   },
   {
     icon: BarChart3,
-    title: 'Analítica Integrada',
+    title: "Analítica Integrada",
     description:
       'Métricas de visualizaciones, clics en "Leer más" y engagement en tiempo real.',
   },
   {
     icon: Code2,
-    title: 'Widget Embebible',
+    title: "Widget Embebible",
     description:
-      'Integra testimonios en cualquier sitio web con nuestro widget personalizable.',
+      "Integra testimonios en cualquier sitio web con nuestro widget personalizable.",
   },
 ];
 
 export default function HomePage() {
+  const { isAuthenticated, user } = useAuth();
+
   return (
     <div className="flex min-h-screen flex-col">
       {/* Navbar */}
@@ -69,9 +74,19 @@ export default function HomePage() {
               </Link>
             </nav>
             <ThemeToggle />
-            <Button asChild variant="outline" size="sm">
-              <Link href="/login">Iniciar sesión</Link>
-            </Button>
+            {!isAuthenticated ? (
+              <Button asChild variant="outline" size="sm">
+                <Link href="/login">Iniciar sesión</Link>
+              </Button>
+            ) : (
+              <Button asChild variant="outline" size="sm">
+                <Link href="/dashboard">
+                  {user?.role === "Admin"
+                    ? "Entrar como Moderador"
+                    : "Entrar como Editor"}
+                </Link>
+              </Button>
+            )}
             <Button asChild size="sm">
               <Link href="/dashboard">Dashboard</Link>
             </Button>
@@ -89,7 +104,7 @@ export default function HomePage() {
               Sistema de gestión de testimonios para Edtech
             </Badge>
             <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl">
-              Convierte historias de éxito en{' '}
+              Convierte historias de éxito en{" "}
               <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
                 confianza
               </span>
@@ -136,7 +151,8 @@ export default function HomePage() {
                 Todo lo que necesitas
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Herramientas completas para gestionar testimonios profesionalmente
+                Herramientas completas para gestionar testimonios
+                profesionalmente
               </p>
             </div>
 
@@ -144,7 +160,10 @@ export default function HomePage() {
               {features.map((feature) => {
                 const Icon = feature.icon;
                 return (
-                  <Card key={feature.title} className="relative overflow-hidden">
+                  <Card
+                    key={feature.title}
+                    className="relative overflow-hidden"
+                  >
                     <CardContent className="p-6">
                       <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                         <Icon className="h-6 w-6 text-primary" />
@@ -187,7 +206,8 @@ export default function HomePage() {
       <footer className="border-t py-8">
         <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 sm:flex-row">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Testimonial CMS. Equipo 24 | S03-26
+            &copy; {new Date().getFullYear()} Testimonial CMS. Equipo 24 |
+            S03-26
           </p>
           <div className="flex items-center gap-4">
             <Link

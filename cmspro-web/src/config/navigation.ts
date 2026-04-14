@@ -7,8 +7,8 @@ import {
   Settings,
   Tags,
   FolderOpen,
-} from 'lucide-react';
-import type { UserRole } from '@/types';
+} from "lucide-react";
+import type { UserRole } from "@/types";
 
 export interface NavItem {
   title: string;
@@ -20,47 +20,65 @@ export interface NavItem {
 
 export const dashboardNavigation: NavItem[] = [
   {
-    title: 'Dashboard',
-    href: '/dashboard',
+    title: "Dashboard",
+    href: "/dashboard",
     icon: LayoutDashboard,
-    roles: ['Admin', 'Editor'],
+    roles: ["Admin", "Editor"],
   },
   {
-    title: 'Testimonios',
-    href: '/dashboard/testimonials',
+    title: "Testimonios",
+    href: "/dashboard/testimonials",
     icon: FileText,
-    roles: ['Admin', 'Editor'],
+    roles: ["Admin", "Editor"],
   },
   {
-    title: 'Moderación',
-    href: '/dashboard/moderation',
+    title: "Moderación",
+    href: "/dashboard/moderation",
     icon: Shield,
-    roles: ['Admin'],
+    roles: ["Admin"],
   },
   {
-    title: 'Analítica',
-    href: '/dashboard/analytics',
+    title: "Analítica",
+    href: "/dashboard/analytics",
     icon: BarChart3,
-    roles: ['Admin'],
+    roles: ["Admin"],
   },
   {
-    title: 'Configuración',
-    href: '/dashboard/settings',
+    title: "Configuración",
+    href: "/dashboard/settings",
     icon: Settings,
-    roles: ['Admin'],
+    roles: ["Admin"],
     children: [
       {
-        title: 'Categorías',
-        href: '/dashboard/settings/categories',
+        title: "Categorías",
+        href: "/dashboard/settings/categories",
         icon: FolderOpen,
-        roles: ['Admin'],
+        roles: ["Admin"],
       },
       {
-        title: 'Tags',
-        href: '/dashboard/settings/tags',
+        title: "Tags",
+        href: "/dashboard/settings/tags",
         icon: Tags,
-        roles: ['Admin'],
+        roles: ["Admin"],
       },
     ],
   },
 ];
+
+export function filterNavigationByRole(
+  items: NavItem[],
+  role?: UserRole,
+): NavItem[] {
+  if (!role) {
+    return [];
+  }
+
+  return items
+    .filter((item) => item.roles.includes(role))
+    .map((item) => ({
+      ...item,
+      children: item.children
+        ? filterNavigationByRole(item.children, role)
+        : undefined,
+    }));
+}

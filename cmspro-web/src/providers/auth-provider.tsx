@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   createContext,
@@ -7,15 +7,26 @@ import {
   useEffect,
   useCallback,
   useMemo,
-} from 'react';
-import type { User } from '@/types';
+} from "react";
+import type { User } from "@/types";
+import {
+  DEMO_CREDENTIALS,
+  loginWithDemoCredentials,
+  sessionUser,
+  clearSession,
+  readLocalDemoDb,
+} from "@/lib/local-demo";
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginAs: (role: "Admin" | "Editor") => Promise<void>;
   logout: () => Promise<void>;
+  refreshSession: () => void;
   isAuthenticated: boolean;
+  isAdmin: boolean;
+  isEditor: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,37 +35,54 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if user is logged in on mount
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
+  const refreshSession = useCallback(() => {
     try {
-      // TODO: Implement actual auth check with .NET backend
-      setIsLoading(false);
-    } catch {
-      setUser(null);
-      setIsLoading(false);
-    }
-  };
-
-  const login = useCallback(async (email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      // TODO: Implement login with .NET backend
-      // const response = await apiClient.post('/auth/login', { email, password });
-      // setUser(response.user);
-      console.log('Login:', email, password);
+      readLocalDemoDb();
+      setUser(sessionUser());
     } finally {
       setIsLoading(false);
     }
   }, []);
 
+  useEffect(() => {
+    refreshSession();
+  }, [refreshSession]);
+
+  const login = useCallback(async (email: string, password: string) => {
+    setIsLoading(true);
+
+    try {
+      const authenticated = loginWithDemoCredentials(email, password);
+      setUser(authenticated);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const loginAs = useCallback(
+    async (role: "Admin" | "Editor") => {
+      const credential = DEMO_CREDENTIALS.find((item) => {
+        if (role === "Admin") {
+          return item.email === "moderador@cmspro.demo";
+        }
+
+        return item.email === "editor@cmspro.demo";
+      });
+
+      if (!credential) {
+        throw new Error("No existe una cuenta demo para el rol solicitado");
+      }
+
+      await login(credential.email, credential.password);
+    },
+    [login],
+  );
+
   const logout = useCallback(async () => {
     setIsLoading(true);
+
     try {
-      // TODO: Implement logout
+      clearSession();
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -66,23 +94,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user,
       isLoading,
       login,
+      loginAs,
       logout,
+      refreshSession,
       isAuthenticated: !!user,
+      isAdmin: user?.role === "Admin",
+      isEditor: user?.role === "Editor",
     }),
-    [user, isLoading, login, logout]
+    [user, isLoading, login, loginAs, logout, refreshSession],
   );
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
