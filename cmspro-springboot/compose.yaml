@@ -19,18 +19,18 @@ services:
     networks:
       - cmspro-network
 
-  ngrok:
-    image: ngrok/ngrok:3
-    container_name: CmsProTunnel
-    environment:
-      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
-    command:
-      - "http"
-      - "backend:8080"
-    ports:
-      - "4040:4040"
-    networks:
-      - cmspro-network
+  #ngrok:
+    #image: ngrok/ngrok:3
+    #container_name: CmsProTunnel
+    #environment:
+      #- NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    #command:
+      #- "http"
+      #- "backend:8080"
+    #ports:
+      #- "4040:4040"
+    #networks:
+      #- cmspro-network
 
   backend:
     build: .
