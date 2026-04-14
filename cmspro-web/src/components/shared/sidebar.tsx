@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,8 +24,16 @@ import {
   type NavItem,
 } from "@/config/navigation";
 import { useAuth } from "@/providers/auth-provider";
-import { Menu, ChevronDown, MessageSquareQuote, Sparkles } from "lucide-react";
+import {
+  Menu,
+  ChevronDown,
+  MessageSquareQuote,
+  Sparkles,
+  LogOut,
+  Loader2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface SidebarProps {
   collapsed?: boolean;
@@ -171,12 +179,80 @@ function NavItemComponent({
   return linkContent;
 }
 
+interface SidebarLogoutButtonProps {
+  collapsed: boolean;
+  isLoading: boolean;
+  onLogout: () => Promise<void>;
+}
+
+function SidebarLogoutButton({
+  collapsed,
+  isLoading,
+  onLogout,
+}: SidebarLogoutButtonProps) {
+  const button = (
+    <Button
+      type="button"
+      variant="ghost"
+      onClick={() => void onLogout()}
+      disabled={isLoading}
+      className={cn(
+        "h-10 w-full rounded-lg border border-sidebar-border/70 bg-sidebar-accent/45 text-sidebar-foreground/90 hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-sidebar-ring",
+        collapsed ? "justify-center px-2" : "justify-start",
+      )}
+    >
+      {isLoading ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <LogOut className="h-4 w-4 text-destructive/85" />
+      )}
+      {!collapsed && (
+        <span className="ml-3 text-sm font-medium">
+          {isLoading ? "Cerrando sesion..." : "Cerrar sesion"}
+        </span>
+      )}
+      {collapsed && <span className="sr-only">Cerrar sesion</span>}
+    </Button>
+  );
+
+  if (!collapsed) {
+    return button;
+  }
+
+  return (
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent side="right">Cerrar sesion</TooltipContent>
+    </Tooltip>
+  );
+}
+
 export function Sidebar({ collapsed = false }: SidebarProps) {
-  const { user } = useAuth();
+  const router = useRouter();
+  const { user, logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigationItems = filterNavigationByRole(
     dashboardNavigation,
     user?.role,
   );
+
+  const handleLogout = async () => {
+    if (isLoggingOut) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+
+    try {
+      await logout();
+      toast.success("Sesion cerrada correctamente");
+      router.replace("/login");
+    } catch {
+      toast.error("No se pudo cerrar sesion");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <aside
@@ -255,6 +331,12 @@ export function Sidebar({ collapsed = false }: SidebarProps) {
           <UserPreview compact={collapsed} />
         </div>
 
+        <SidebarLogoutButton
+          collapsed={collapsed}
+          isLoading={isLoggingOut}
+          onLogout={handleLogout}
+        />
+
         {!collapsed && (
           <p className="px-1 text-xs text-sidebar-foreground/55">
             Testimonial CMS v1.0
@@ -266,12 +348,33 @@ export function Sidebar({ collapsed = false }: SidebarProps) {
 }
 
 export function MobileSidebar() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-  const { user } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { user, logout } = useAuth();
   const navigationItems = filterNavigationByRole(
     dashboardNavigation,
     user?.role,
   );
+
+  const handleMobileLogout = async () => {
+    if (isLoggingOut) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+
+    try {
+      await logout();
+      toast.success("Sesion cerrada correctamente");
+      setOpen(false);
+      router.replace("/login");
+    } catch {
+      toast.error("No se pudo cerrar sesion");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -328,6 +431,22 @@ export function MobileSidebar() {
               <ThemeToggle />
             </div>
             <UserPreview />
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={isLoggingOut}
+              onClick={() => void handleMobileLogout()}
+              className="h-10 w-full justify-start rounded-lg border border-sidebar-border/70 bg-sidebar-accent/45 text-sidebar-foreground/90 hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-sidebar-ring"
+            >
+              {isLoggingOut ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <LogOut className="h-4 w-4 text-destructive/85" />
+              )}
+              <span className="ml-2 font-medium">
+                {isLoggingOut ? "Cerrando sesion..." : "Cerrar sesion"}
+              </span>
+            </Button>
           </div>
         </ScrollArea>
       </SheetContent>
