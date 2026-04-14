@@ -3,6 +3,7 @@
 import { QueryProvider } from './query-provider';
 import { AuthProvider } from './auth-provider';
 import { ThemeProvider } from './theme-provider';
+import { LocalDemoSanitizer } from './local-demo-sanitizer';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -15,6 +16,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       >
       <QueryProvider>
         <AuthProvider>
+          <LocalDemoSanitizer />
           <TooltipProvider delayDuration={0}>
             {children}
             <Toaster richColors position="top-right" />

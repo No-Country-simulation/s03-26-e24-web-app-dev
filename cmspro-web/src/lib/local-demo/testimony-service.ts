@@ -15,6 +15,7 @@ import type {
   User,
 } from "@/types";
 import type { CreateTestimonySubmitInput } from "@/features/testimonials/types";
+import { normalizeCmsImageUrl } from "@/lib/media-url";
 
 interface LocalListParams {
   status?: Testimony["status"];
@@ -325,7 +326,7 @@ function toImageMedia(
   testimonyId: string,
   imageUrl?: string | null,
 ): Testimony["mediaFiles"] {
-  const safeUrl = imageUrl?.trim();
+  const safeUrl = normalizeCmsImageUrl(imageUrl);
 
   if (!safeUrl) {
     return [];
@@ -341,6 +342,38 @@ function toImageMedia(
       publicId: generateId("img"),
     },
   ];
+}
+
+export function sanitizeLocalDemoMediaUrls(): void {
+  updateLocalDemoDb((db) => {
+    const testimonies = db.testimonies.map((testimony) => ({
+      ...testimony,
+      mediaFiles: testimony.mediaFiles.filter((media) => {
+        if (media.type !== "Image") {
+          return true;
+        }
+
+        return normalizeCmsImageUrl(media.url) !== null;
+      }),
+    }));
+
+    const shadowCopies = db.shadowCopies.map((shadow) => ({
+      ...shadow,
+      mediaSnapshots: shadow.mediaSnapshots.filter((media) => {
+        if (media.type !== "Image") {
+          return true;
+        }
+
+        return normalizeCmsImageUrl(media.url) !== null;
+      }),
+    }));
+
+    return {
+      ...db,
+      testimonies,
+      shadowCopies,
+    };
+  });
 }
 
 export function createDraftTestimony(

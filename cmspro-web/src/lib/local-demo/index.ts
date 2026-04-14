@@ -18,6 +18,7 @@ export {
   listModerationQueue,
   listTestimonies,
   rejectShadowCopy,
+  sanitizeLocalDemoMediaUrls,
   submitForReview,
   updateTestimonyWithShadow,
   updateDraftTestimony,

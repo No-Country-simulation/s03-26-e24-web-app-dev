@@ -8,6 +8,7 @@ import type {
   Testimony,
 } from "@/types";
 import type { TestimonyFormInput } from "../types";
+import { normalizeCmsImageUrl } from "@/lib/media-url";
 
 export interface GetTestimonialsParams {
   page?: number;
@@ -76,10 +77,16 @@ function getSafeTitle(content: string): string {
 }
 
 function toMediaFile(url: string, testimonyId: string): MediaFile {
-  const isVideo = /youtube\.com|youtu\.be/i.test(url);
+  const normalizedUrl = normalizeCmsImageUrl(url);
+
+  if (!normalizedUrl) {
+    throw new Error("Unsupported media URL host for image rendering");
+  }
+
+  const isVideo = /youtube\.com|youtu\.be/i.test(normalizedUrl);
   const type: MediaType = isVideo ? "Video" : "Image";
   const provider: MediaProvider = isVideo ? "YouTube" : "Cloudinary";
-  const pathWithoutQuery = url.split("?")[0];
+  const pathWithoutQuery = normalizedUrl.split("?")[0];
   const publicId =
     pathWithoutQuery.split("/").filter(Boolean).pop() ??
     `legacy-${testimonyId}`;
@@ -88,7 +95,7 @@ function toMediaFile(url: string, testimonyId: string): MediaFile {
     id: `legacy-media-${testimonyId}`,
     testimonyId,
     type,
-    url,
+    url: normalizedUrl,
     provider,
     publicId,
   };
@@ -104,6 +111,7 @@ function normalizeLegacyTestimonial(
   const createdAt =
     payload.createdAt ?? payload.CreatedAt ?? new Date().toISOString();
   const multimediaUrl = payload.multimediaUrl ?? payload.MultimediaUrl;
+  const safeMediaUrl = normalizeCmsImageUrl(multimediaUrl);
 
   return {
     id: testimonyId,
@@ -116,7 +124,7 @@ function normalizeLegacyTestimonial(
     status: "Published",
     categoryId: "legacy-category",
     tags: [],
-    mediaFiles: multimediaUrl ? [toMediaFile(multimediaUrl, testimonyId)] : [],
+    mediaFiles: safeMediaUrl ? [toMediaFile(safeMediaUrl, testimonyId)] : [],
     createdAt,
     publishedAt: createdAt,
     createdBy: "legacy-backend",
