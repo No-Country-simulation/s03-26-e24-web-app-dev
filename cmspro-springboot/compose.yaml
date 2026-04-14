@@ -1,0 +1,56 @@
+name: cmspro-application
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: CmsProDatabase
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-cmspro_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-cmspro_password}
+      - POSTGRES_DB=${POSTGRES_DB:-cmspro_database}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cmspro_user} -d ${POSTGRES_DB:-cmspro_database}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - cmspro-network
+
+  ngrok:
+    image: ngrok/ngrok:3
+    container_name: CmsProTunnel
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command:
+      - "http"
+      - "backend:8080"
+    ports:
+      - "4040:4040"
+    networks:
+      - cmspro-network
+
+  backend:
+    build: .
+    image: cmspro-backend
+    container_name: CmsProBackend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-jdbc:postgresql://postgres:5432/cmspro_database}
+      - POSTGRES_USER=${POSTGRES_USER:-cmspro_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-cmspro_password}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cmspro-network
+
+networks:
+  cmspro-network:
+    driver: bridge
