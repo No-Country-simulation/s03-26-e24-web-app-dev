@@ -21,21 +21,23 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-dvh overflow-hidden bg-background">
-      {/* Desktop Sidebar */}
-      <div className="hidden shrink-0 md:block">
-        <Sidebar />
-      </div>
+    <DashboardAccessGuard>
+      <div className="flex h-dvh overflow-hidden bg-background">
+        {/* Desktop Sidebar */}
+        <div className="hidden shrink-0 md:block">
+          <Sidebar />
+        </div>
 
-      {/* Main Content */}
-      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        <Navbar />
-        <main className="flex-1 overflow-y-auto bg-gradient-to-b from-muted/35 via-background to-background px-4 py-5 md:px-6 md:py-6 lg:px-8">
-          <AnimatedRouteContainer>
-            <DashboardAccessGuard>{children}</DashboardAccessGuard>
-          </AnimatedRouteContainer>
-        </main>
+        {/* Main Content */}
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <Navbar />
+          <main className="flex-1 overflow-y-auto bg-gradient-to-b from-muted/35 via-background to-background px-4 py-5 md:px-6 md:py-6 lg:px-8">
+            <AnimatedRouteContainer>
+              {children}
+            </AnimatedRouteContainer>
+          </main>
+        </div>
       </div>
-    </div>
+    </DashboardAccessGuard>
   );
 }

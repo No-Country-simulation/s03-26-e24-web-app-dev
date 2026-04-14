@@ -31,7 +31,7 @@ type LoginRole = "Editor" | "Admin";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, loginAs, isAuthenticated, isLoading } = useAuth();
+  const { login, isAuthenticated, isLoading } = useAuth();
 
   const [selectedRole, setSelectedRole] = useState<LoginRole>("Editor");
   const [email, setEmail] = useState(DEMO_EDITOR_EMAIL);
@@ -80,27 +80,13 @@ export default function LoginPage() {
     setPassword(DEMO_PASSWORD);
   };
 
-  const handleQuickLogin = async (role: LoginRole) => {
-    setIsSubmitting(true);
-
-    try {
-      await loginAs(role);
-      toast.success(
-        role === "Admin" ? "Entraste como Moderador" : "Entraste como Editor",
-      );
-      router.replace(nextPath ?? "/dashboard");
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "No se pudo iniciar sesion";
-      toast.error(message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/35 px-4 py-10">
-      <Card className="w-full max-w-md border-border/70 shadow-lg motion-safe:animate-fade-in-up">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-muted/35 via-background to-background px-4 py-10">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_-8%,color-mix(in_oklch,var(--primary),transparent_86%),transparent_52%),radial-gradient(circle_at_84%_-12%,color-mix(in_oklch,var(--accent),transparent_87%),transparent_56%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),transparent_4%)_0%,transparent_42%)]" />
+
+      <Card className="relative w-full max-w-md overflow-hidden border-border/70 bg-card/75 shadow-xl motion-safe:animate-fade-in-up">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/70 via-accent/60 to-primary/20" />
         <CardHeader className="space-y-2">
           <CardTitle className="font-display text-3xl">Iniciar sesion</CardTitle>
           <CardDescription>
@@ -116,12 +102,18 @@ export default function LoginPage() {
             }
             className="gap-3"
           >
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="Editor">
+            <TabsList className="grid w-full grid-cols-2 rounded-xl border border-border/70 bg-muted/60 p-1">
+              <TabsTrigger
+                value="Editor"
+                className="rounded-lg data-[active]:bg-background/90"
+              >
                 <PenSquare className="mr-1 h-4 w-4" />
                 Editor
               </TabsTrigger>
-              <TabsTrigger value="Admin">
+              <TabsTrigger
+                value="Admin"
+                className="rounded-lg data-[active]:bg-background/90"
+              >
                 <ShieldCheck className="mr-1 h-4 w-4" />
                 Moderador
               </TabsTrigger>
@@ -137,7 +129,7 @@ export default function LoginPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="h-11"
+                className="h-11 rounded-xl border-border/70 bg-background/70"
               />
             </div>
 
@@ -150,13 +142,13 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                  className="h-11 pr-11"
+                  className="h-11 rounded-xl border-border/70 bg-background/70 pr-11"
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="absolute right-1 top-1 h-9 w-9"
+                  className="absolute right-1 top-1 h-9 w-9 rounded-lg text-muted-foreground hover:text-foreground"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
                   {showPassword ? (
@@ -168,7 +160,11 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <Button type="submit" className="h-11 w-full" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="h-11 w-full rounded-xl shadow-sm"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -180,14 +176,17 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="rounded-lg border border-border/70 bg-muted/45 p-3 text-xs text-muted-foreground">
+          <div className="rounded-xl border border-border/70 bg-background/70 p-3 text-xs text-muted-foreground">
             <p>{selectedRole === "Admin" ? DEMO_MOD_EMAIL : DEMO_EDITOR_EMAIL}</p>
             <p>Password: {DEMO_PASSWORD}</p>
             {nextPath && <p className="mt-1">Redireccion: {nextPath}</p>}
           </div>
 
           <p className="text-center text-xs text-muted-foreground">
-            <Link href="/" className="underline underline-offset-4">
+            <Link
+              href="/"
+              className="underline underline-offset-4 transition-colors hover:text-foreground"
+            >
               Volver al inicio
             </Link>
           </p>
