@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -39,6 +40,7 @@ import type {
   ModerationSnapshot,
 } from "@/lib/local-demo";
 import { useAuth } from "@/providers/auth-provider";
+import { isAllowedCmsImageUrl } from "@/lib/media-url";
 import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
@@ -111,6 +113,41 @@ function stringify(value: unknown): string {
   }
 
   return String(value);
+}
+
+function parseMediaUrls(value: string): string[] {
+  if (!value || value === "-") return [];
+  return value
+    .split(", ")
+    .map((url) => url.trim())
+    .filter((url) => url.length > 0 && isAllowedCmsImageUrl(url));
+}
+
+function MediaPreviewCell({ value }: { value: string }) {
+  const urls = parseMediaUrls(value);
+
+  if (urls.length === 0) {
+    return <p className="text-sm text-muted-foreground">Sin media</p>;
+  }
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {urls.map((url) => (
+        <div
+          key={url}
+          className="relative h-20 w-28 overflow-hidden rounded-lg border border-border/70"
+        >
+          <Image
+            src={url}
+            alt="Media preview"
+            fill
+            sizes="112px"
+            className="object-cover"
+          />
+        </div>
+      ))}
+    </div>
+  );
 }
 
 type SnapshotFieldDefinition = {
@@ -287,7 +324,11 @@ function FocusColumn({ title, side, fields, baselineLabel }: FocusColumnProps) {
                   </Badge>
                 )}
               </div>
-              <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">{value}</p>
+              {field.key === "media" ? (
+                <MediaPreviewCell value={value} />
+              ) : (
+                <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">{value}</p>
+              )}
             </div>
           );
         })}
@@ -345,9 +386,13 @@ function SplitDiffTable({ fields, baselineLabel }: SplitDiffTableProps) {
                   <p className="mb-1 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                     {baselineLabel}
                   </p>
-                  <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
-                    {field.baseline}
-                  </p>
+                  {field.key === "media" ? (
+                    <MediaPreviewCell value={field.baseline} />
+                  ) : (
+                    <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
+                      {field.baseline}
+                    </p>
+                  )}
                 </div>
 
                 <div
@@ -361,9 +406,13 @@ function SplitDiffTable({ fields, baselineLabel }: SplitDiffTableProps) {
                   <p className="mb-1 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                     Propuesta
                   </p>
-                  <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
-                    {field.proposed}
-                  </p>
+                  {field.key === "media" ? (
+                    <MediaPreviewCell value={field.proposed} />
+                  ) : (
+                    <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
+                      {field.proposed}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -391,14 +440,21 @@ function InitialSubmissionBoard({ fields }: InitialSubmissionBoardProps) {
         {fields.map((field) => (
           <div
             key={`initial-${field.key}`}
-            className="rounded-lg border border-border/70 bg-background/70 p-3"
+            className={cn(
+              "rounded-lg border border-border/70 bg-background/70 p-3",
+              field.key === "media" && "md:col-span-2",
+            )}
           >
             <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
               {field.label}
             </p>
-            <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
-              {field.proposed}
-            </p>
+            {field.key === "media" ? (
+              <MediaPreviewCell value={field.proposed} />
+            ) : (
+              <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
+                {field.proposed}
+              </p>
+            )}
           </div>
         ))}
       </CardContent>
@@ -438,9 +494,13 @@ function FieldQuickPeekDialog({
             <p className="mb-1 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
               {baselineLabel}
             </p>
-            <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
-              {field.baseline}
-            </p>
+            {field.key === "media" ? (
+              <MediaPreviewCell value={field.baseline} />
+            ) : (
+              <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
+                {field.baseline}
+              </p>
+            )}
           </div>
           <div
             className={cn(
@@ -453,9 +513,13 @@ function FieldQuickPeekDialog({
             <p className="mb-1 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
               Propuesta
             </p>
-            <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
-              {field.proposed}
-            </p>
+            {field.key === "media" ? (
+              <MediaPreviewCell value={field.proposed} />
+            ) : (
+              <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
+                {field.proposed}
+              </p>
+            )}
           </div>
         </div>
       </DialogContent>

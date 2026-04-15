@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -112,7 +111,7 @@ export function TestimonySpotlightModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={cn(
-          "max-h-[92vh] w-[min(1040px,96vw)] overflow-hidden border-none bg-transparent p-0 shadow-none",
+          "max-h-[92vh] max-w-none w-[min(1040px,96vw)] overflow-hidden border-none bg-transparent p-0 shadow-none",
           "[&>button]:right-5 [&>button]:top-5 [&>button]:z-30 [&>button]:rounded-full [&>button]:border [&>button]:border-white/40 [&>button]:bg-black/55 [&>button]:p-1 [&>button]:text-white [&>button]:opacity-100",
         )}
       >
@@ -120,15 +119,14 @@ export function TestimonySpotlightModal({
           <div className="pointer-events-none absolute -left-12 -top-16 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-20 right-4 h-72 w-72 rounded-full bg-accent/30 blur-3xl" />
 
-          <div className="grid max-h-[92vh] grid-cols-1 lg:grid-cols-[320px,1fr]">
-            <aside className="relative min-h-[280px] overflow-hidden border-b border-border/70 lg:min-h-full lg:border-b-0 lg:border-r">
+          <div className="flex max-h-[92vh] flex-col lg:flex-row">
+            <aside className="relative flex min-h-[280px] w-full flex-col overflow-hidden border-b border-border/70 lg:w-[320px] lg:shrink-0 lg:border-b-0 lg:border-r">
               {image ? (
-                <Image
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
                   src={image.url}
                   alt={activeTestimony.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 320px"
-                  className="object-cover"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/20 to-background" />
@@ -160,7 +158,7 @@ export function TestimonySpotlightModal({
               </div>
             </aside>
 
-            <section className="relative overflow-y-auto p-6 sm:p-8">
+            <section className="relative flex-1 overflow-y-auto p-6 sm:p-8">
               <DialogHeader className="space-y-4 text-left">
                 <div className="flex flex-wrap items-center gap-2">
                   <StatusBadge status={activeTestimony.status} />
