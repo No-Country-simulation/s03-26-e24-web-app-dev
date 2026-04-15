@@ -23,7 +23,7 @@ POST https://cmspro.yoshua-cloud.duckdns.org/api/images/upload
 ### Ejemplo de Request (JavaScript - Fetch API)
 ```javascript
 const formData = new FormData();
-formData.append('image', file); // 'file' es el objeto File del input
+formData.append('file', file);
 
 fetch('https://cmspro.yoshua-cloud.duckdns.org/api/images/upload', {
   method: 'POST',
