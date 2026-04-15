@@ -1,22 +1,13 @@
-# s03-26-e24-web-app-dev
-S03-26-Equipo 24-Web App Development.
-
-# Branch: feature/crud-flow
-Esta es la rama de Samuel para subir sus cambios y luego hacer merge con la de Logan.
-Samuel comprobará que se puede hacer un CRUD sobre el la tabla testimonials
-
-# Proyecto:
-
 ## 🤓 Testimonial CMS
 
-**Sector de Negocio**
+**Sector de negocio**
 Edtech
 
-**Necesidad del Cliente**
-Las instituciones y empresas con comunidades activas necesitan mostrar el impacto de sus programas o productos mediante historias reales. El cliente busca un CMS especializado en recopilar, organizar y publicar testimonios en distintos formatos (texto, video, imagen) con funciones de curaduría, moderación y analítica de engagement.
+**Descripción**
+En este proyecto se presenta un producto mínimo viable para un sistema de gestión de contenidos (Content Management System - CMS) para ser utilizado por instituciones y empresas con comunidades activas que necesiten mostrar el impacto de sus programas o productos mediante historias reales. 
 
 **Objetivo**
-Construir un sistema CMS especializado en la gestión y publicación de testimonios y casos de éxito para sitios web e instituciones.
+Construir un CMS especializado en recopilar, organizar y publicar testimonios y casos de éxito en distintos formatos (texto, video, imagen) para sitios web e instituciones.
 
 **Requerimientos funcionales**
 * Creación y edición de testimonios con texto, imagen y video.
@@ -30,7 +21,14 @@ Construir un sistema CMS especializado en la gestión y publicación de testimon
 * Roles: admin, editor y visitante.
 * API REST documentada para consulta externa.
 
-**Entregables esperados**
-* CMS funcional con dashboard de administración.
-* Documentación de API.
-* Demostración de integración en sitio externo.
+**Potenciales extensiones a futuro**
+* Analítica de engagement.
+* Sistema de recomendaciones basado en inteligencia artificial.
+
+**Tecnologías implementadas**
+Frontend:	Next.js
+Backend: .Net, SpringBoot
+Base de Datos: Supabase, PostgreSQL
+
+**Estado del proyecto**
+En desarrollo
