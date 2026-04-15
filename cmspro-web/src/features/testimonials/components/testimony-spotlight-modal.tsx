@@ -151,10 +151,10 @@ export function TestimonySpotlightModal({
                 <p className="mb-2 text-[11px] uppercase tracking-[0.28em] text-white/70">
                   historia real
                 </p>
-                <h3 className="font-display text-3xl leading-[1.02]">
+                <h3 className="break-words font-display text-3xl leading-[1.02]">
                   {activeTestimony.authorName}
                 </h3>
-                <p className="mt-1 text-sm text-white/80">
+                <p className="mt-1 truncate text-sm text-white/80">
                   {activeTestimony.authorRole ?? "Comunidad Testimonial CMS"}
                 </p>
               </div>
@@ -188,7 +188,7 @@ export function TestimonySpotlightModal({
                   )}
                 </div>
 
-                <DialogTitle className="font-display text-3xl leading-tight sm:text-4xl">
+                <DialogTitle className="break-words font-display text-3xl leading-tight sm:text-4xl">
                   {activeTestimony.title}
                 </DialogTitle>
 
@@ -202,7 +202,7 @@ export function TestimonySpotlightModal({
               <div className="mt-6 space-y-6">
                 <blockquote className="relative rounded-2xl border border-border/70 bg-card/70 px-6 py-5">
                   <Quote className="absolute -top-3 left-5 h-6 w-6 rounded-full bg-primary p-1 text-primary-foreground" />
-                  <p className="text-base leading-relaxed text-foreground/95 sm:text-lg">
+                  <p className="break-words text-base leading-relaxed text-foreground/95 sm:text-lg">
                     &ldquo;{activeTestimony.body}&rdquo;
                   </p>
                 </blockquote>
@@ -235,11 +235,11 @@ export function TestimonySpotlightModal({
                       </AvatarFallback>
                     </Avatar>
 
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium text-foreground">
                         {activeTestimony.authorName}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="truncate text-xs text-muted-foreground">
                         {activeTestimony.authorRole ?? "Comunidad educacional"}
                       </p>
                     </div>

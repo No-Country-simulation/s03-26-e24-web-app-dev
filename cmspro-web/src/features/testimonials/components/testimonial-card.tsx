@@ -63,7 +63,7 @@ export const TestimonialCard = memo(function TestimonialCard({
         )}
 
         {/* Quote */}
-        <blockquote className="mb-4 text-sm italic text-muted-foreground">
+        <blockquote className="mb-4 line-clamp-4 break-words text-sm italic text-muted-foreground">
           &ldquo;{testimonial.body}&rdquo;
         </blockquote>
       </CardContent>

@@ -5,9 +5,9 @@ import type {
 
 export type { TestimonyFormInput, TestimonyResponse };
 
-export type CreateTestimonySubmitInput = TestimonyFormInput & {
-  imageUrl?: string | null;
-};
+// imageUrl is already required in TestimonyFormInput via the schema.
+// This alias keeps call sites readable.
+export type CreateTestimonySubmitInput = TestimonyFormInput;
 
 export type CreateTestimonyFormInput = {
   type: "Testimonial" | "SuccessCase";
@@ -18,7 +18,7 @@ export type CreateTestimonyFormInput = {
   tags: string[];
   body: string;
   extendedBody: string | null;
-  imageUrl?: string | null;
+  imageUrl: string;
 };
 
 // Re-export types from global types that are specific to testimonials

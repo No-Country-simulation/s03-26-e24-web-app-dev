@@ -84,12 +84,12 @@ export const SuccessCaseCard = memo(function SuccessCaseCard({
       )}
 
       <CardHeader className={cn(!image && 'pt-12')}>
-        <h3 className="text-lg font-semibold leading-tight">{testimony.title}</h3>
+        <h3 className="line-clamp-2 break-words text-lg font-semibold leading-tight">{testimony.title}</h3>
       </CardHeader>
 
       <CardContent className="pb-2">
         {/* Preview Quote */}
-        <blockquote className="line-clamp-3 text-sm text-muted-foreground">
+        <blockquote className="line-clamp-3 break-words text-sm text-muted-foreground">
           &ldquo;{testimony.body}&rdquo;
         </blockquote>
 

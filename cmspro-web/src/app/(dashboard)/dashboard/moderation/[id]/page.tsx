@@ -287,7 +287,7 @@ function FocusColumn({ title, side, fields, baselineLabel }: FocusColumnProps) {
                   </Badge>
                 )}
               </div>
-              <p className="text-sm leading-relaxed whitespace-pre-wrap">{value}</p>
+              <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">{value}</p>
             </div>
           );
         })}
@@ -345,7 +345,7 @@ function SplitDiffTable({ fields, baselineLabel }: SplitDiffTableProps) {
                   <p className="mb-1 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                     {baselineLabel}
                   </p>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                  <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
                     {field.baseline}
                   </p>
                 </div>
@@ -361,7 +361,7 @@ function SplitDiffTable({ fields, baselineLabel }: SplitDiffTableProps) {
                   <p className="mb-1 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                     Propuesta
                   </p>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                  <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
                     {field.proposed}
                   </p>
                 </div>
@@ -396,7 +396,7 @@ function InitialSubmissionBoard({ fields }: InitialSubmissionBoardProps) {
             <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
               {field.label}
             </p>
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
               {field.proposed}
             </p>
           </div>
@@ -438,7 +438,7 @@ function FieldQuickPeekDialog({
             <p className="mb-1 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
               {baselineLabel}
             </p>
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
               {field.baseline}
             </p>
           </div>
@@ -453,7 +453,7 @@ function FieldQuickPeekDialog({
             <p className="mb-1 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
               Propuesta
             </p>
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            <p className="break-words text-sm leading-relaxed whitespace-pre-wrap">
               {field.proposed}
             </p>
           </div>

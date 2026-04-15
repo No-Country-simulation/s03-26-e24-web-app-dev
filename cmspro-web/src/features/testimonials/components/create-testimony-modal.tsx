@@ -22,6 +22,7 @@ import type {
   CreateTestimonySubmitInput,
 } from "../types";
 import { Loader2, Sparkles, WandSparkles, X } from "lucide-react";
+import { ImageUpload } from "@/components/shared/image-upload";
 
 interface CreateTestimonyModalProps {
   open: boolean;
@@ -71,7 +72,7 @@ function joinTags(tags: string[]): string {
 
 function toCreatePayload(state: FormState): CreateTestimonySubmitInput {
   const tags = parseTagsInput(state.tagsText);
-  const imageUrl = state.imageUrl.trim() || null;
+  const imageUrl = state.imageUrl.trim();
 
   if (state.type === "SuccessCase") {
     return {
@@ -397,21 +398,13 @@ export function CreateTestimonyModal({
                 </div>
 
                 <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="imageUrl">Imagen (URL)</Label>
-                  <Input
-                    id="imageUrl"
-                    value={formState.imageUrl}
-                    onChange={(event) => handleFieldChange("imageUrl", event.target.value)}
-                    className={cn(
-                      "h-11 rounded-xl bg-card/60",
-                      fieldErrors.imageUrl &&
-                        "border-destructive/60 ring-2 ring-destructive/25",
-                    )}
-                    placeholder="https://images.unsplash.com/..."
+                  <Label>Imagen</Label>
+                  <ImageUpload
+                    value={formState.imageUrl || null}
+                    onChange={(url) => handleFieldChange("imageUrl", url ?? "")}
+                    error={fieldErrors.imageUrl}
+                    disabled={isSubmitting}
                   />
-                  {fieldErrors.imageUrl && (
-                    <p className="text-xs text-destructive">{fieldErrors.imageUrl}</p>
-                  )}
                 </div>
 
                 <div className="space-y-2 sm:col-span-2">

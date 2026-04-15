@@ -7,6 +7,7 @@ const testimonyBaseSchema = z.object({
   authorRole: z.string().max(100, 'Máximo 100 caracteres').optional(),
   categoryId: z.string().uuid('Selecciona una categoría'),
   tags: z.array(z.string()).default([]),
+  imageUrl: z.string().url('Debes subir una imagen').min(1, 'La imagen es obligatoria'),
 });
 
 // Testimonial schema (short text, no extended body)

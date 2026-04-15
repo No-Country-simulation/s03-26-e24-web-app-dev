@@ -110,14 +110,14 @@ function TestimonialRow({
 }: TestimonyRowProps) {
   return (
     <TableRow className="hover:bg-muted/35">
-      <TableCell className="py-4">
+      <TableCell className="max-w-[320px] py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted/70">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted/70">
             <FileText className="h-5 w-5 text-muted-foreground" />
           </div>
-          <div>
-            <p className="font-medium tracking-tight">{testimony.title}</p>
-            <p className="text-sm text-muted-foreground line-clamp-1">
+          <div className="min-w-0">
+            <p className="truncate font-medium tracking-tight">{testimony.title}</p>
+            <p className="break-words text-sm text-muted-foreground line-clamp-1">
               {testimony.body}
             </p>
             {testimony.status === "Rejected" && rejectionFeedback && (
@@ -125,7 +125,7 @@ function TestimonialRow({
                 <p className="text-xs font-semibold text-destructive">
                   Motivo del rechazo
                 </p>
-                <p className="mt-0.5 text-xs text-foreground/90">
+                <p className="mt-0.5 line-clamp-2 break-words text-xs text-foreground/90">
                   {rejectionFeedback.comment ||
                     "Sin comentario del moderador. Solicita detalle al equipo de moderacion."}
                 </p>
@@ -147,7 +147,7 @@ function TestimonialRow({
                   <p className="text-xs font-semibold text-foreground">
                     Ultima sugerencia rechazada
                   </p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
+                  <p className="mt-0.5 line-clamp-2 break-words text-xs text-muted-foreground">
                     {rejectionFeedback.comment ||
                       "Sin comentario del moderador en la sugerencia rechazada."}
                   </p>
@@ -163,10 +163,10 @@ function TestimonialRow({
           {testimony.type === "SuccessCase" ? "Caso de Éxito" : "Testimonio"}
         </Badge>
       </TableCell>
-      <TableCell className="py-4">
-        <div>
-          <p className="text-sm font-medium">{testimony.authorName}</p>
-          <p className="text-xs text-muted-foreground">
+      <TableCell className="max-w-[160px] py-4">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-medium">{testimony.authorName}</p>
+          <p className="truncate text-xs text-muted-foreground">
             {testimony.authorRole}
           </p>
         </div>
@@ -187,7 +187,7 @@ function TestimonialRow({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/testimonials/${testimony.id}`}>
+              <Link href={`/testimonials/${testimony.id}?preview=1`}>
                 <Eye className="mr-2 h-4 w-4" />
                 Ver
               </Link>
@@ -476,7 +476,7 @@ export default function TestimonialsAdminPage() {
           extendedBody: editingTestimony.extendedBody ?? "",
           imageUrl:
             editingTestimony.mediaFiles.find((media) => media.type === "Image")
-              ?.url ?? null,
+              ?.url ?? "",
         }
       : {
           type: "Testimonial",
@@ -489,7 +489,7 @@ export default function TestimonialsAdminPage() {
           extendedBody: null,
           imageUrl:
             editingTestimony.mediaFiles.find((media) => media.type === "Image")
-              ?.url ?? null,
+              ?.url ?? "",
         }
     : null;
 
