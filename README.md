@@ -1,12 +1,12 @@
-## 🤓 Testimonial CMS
+# 🤓 Testimonial CMS
 
-**Sector de negocio**
+**Sector de negocio:**
 Edtech
 
-**Descripción**
+**Descripción:**
 En este proyecto se presenta un producto mínimo viable para un sistema de gestión de contenidos (Content Management System - CMS) para ser utilizado por instituciones y empresas con comunidades activas que necesiten mostrar el impacto de sus programas o productos mediante historias reales. 
 
-**Objetivo**
+**Objetivo:**
 Construir un CMS especializado en recopilar, organizar y publicar testimonios y casos de éxito en distintos formatos (texto, video, imagen) para sitios web e instituciones.
 
 **Requerimientos funcionales**
@@ -21,14 +21,27 @@ Construir un CMS especializado en recopilar, organizar y publicar testimonios y 
 * Roles: admin, editor y visitante.
 * API REST documentada para consulta externa.
 
+**Roles del sistema**
+* Admin: Tiene acceso y control total del CMS.
+* Editor: Lleva a cabo la gestión y moderación de contenido.
+* Visitante: Puede consultar y visualizar los testimonios que son públicos.
+
+**Tecnologías implementadas**
+* Frontend:	Next.js
+* Backend: .Net, SpringBoot
+* Base de Datos: Supabase, PostgreSQL
+
 **Potenciales extensiones a futuro**
 * Analítica de engagement.
 * Sistema de recomendaciones basado en inteligencia artificial.
 
-**Tecnologías implementadas**
-Frontend:	Next.js
-Backend: .Net, SpringBoot
-Base de Datos: Supabase, PostgreSQL
+**Equipo de trabajo**
 
-**Estado del proyecto**
+Este proyecto es desarrollado mediante trabajo colaborativo implementando la metodología ágil Scrum en el entorno de No Country (S03-26-Equipo 24-Web App Development). El equipo está integrado por:
+* Mario Núñez, Project Manager
+* L. Yoshua Pariona, Backend Developer
+* Jorge G. Olarte Quispe, Frontend Developer
+* Pedro L. Acosta Pérez, QA Tester
+
+**Estado del proyecto:**
 En desarrollo
